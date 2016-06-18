@@ -1,4 +1,4 @@
-# C-ibrary
+# C-Library
 Projet pour SMB215 
 le projet est une application de partage des documents est des fichiers entre different persons ( etudians , professeur , chef d'equipe .ect ...) 
 <ol>
