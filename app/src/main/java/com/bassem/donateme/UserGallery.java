@@ -1,5 +1,6 @@
 package com.bassem.donateme;
 
+import android.app.ListActivity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -7,6 +8,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 
 /**
@@ -64,7 +67,35 @@ public class UserGallery extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user_gallery, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_user_gallery, container, false);
+
+        //now you must initialize your list view
+        ListView listview =(ListView)rootView .findViewById(R.id.lstGallery);
+
+        //EDITED Code
+        String[] Gitems = new String[] {"Item 1", "Item 2", "Item 3","Item 1", "Item 2", "Item 3","Item 1", "Item 2", "Item 3","Item 1", "Item 2", "Item 3"};
+        ArrayAdapter<String> adapter =
+                new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, Gitems){
+
+                    @Override
+                    public View getView(int position, View convertView, ViewGroup parent){
+                        // Get the current item from ListView
+                        View view = super.getView(position,convertView,parent);
+
+                        // Get the Layout Parameters for ListView Current Item View
+                        ViewGroup.LayoutParams params = view.getLayoutParams();
+
+                        // Set the height of the Item View
+                        params.height = 200;
+                        view.setLayoutParams(params);
+
+                        return view;
+                    }
+                };
+
+        listview.setAdapter(adapter);
+
+            return rootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
