@@ -49,27 +49,12 @@ public class Login extends AppCompatActivity implements AsyncResponse {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         setTitle(Helper.getApplicationName(this)+" - Login ");
-        checkIfPreferencesExist();
+
         SetElements();
         SignInWithGoogle();
     }
 
-    @Override
-    protected void onResume() {
-        checkIfPreferencesExist();
-        super.onResume();
-    }
 
-    private void checkIfPreferencesExist() {
-        SharedPreferences   myprefs =this.getSharedPreferences("user", MODE_WORLD_READABLE);
-        String value = myprefs.getString("user",null);
-        if(value!=null)
-        {
-            Intent myIntent=new Intent(this, UserProfile.class);
-            this.startActivity(myIntent);
-        }
-
-    }
 
 
     private void SetElements() {
@@ -196,7 +181,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
                 int ID =Integer.parseInt(obj.getString("ID"));
 
                 user = new users(ID,name,email,password,image,"");
-                myIntent.putExtra("user",user.toJSON());
+
 
             }
             else{
@@ -208,7 +193,7 @@ public class Login extends AppCompatActivity implements AsyncResponse {
                 user.Register(this,this);
             }
             SharedPreferences myprefs = this.getSharedPreferences("user", MODE_WORLD_READABLE);
-            myprefs.edit().putString("user",obj.toString()).apply();
+            myprefs.edit().putString("user",user.toJSON()).apply();
             this.startActivity(myIntent);
         } catch (JSONException ex) {
             ex.printStackTrace();
@@ -219,8 +204,6 @@ public class Login extends AppCompatActivity implements AsyncResponse {
         try {
         if (obj.getString("status").equals("1")) {
             Intent myIntent = new Intent(this, UserProfile.class);
-            SharedPreferences myprefs = this.getSharedPreferences("user", MODE_WORLD_READABLE);
-            myprefs.edit().putString("user",obj.toString()).apply();
             int ID =Integer.parseInt(obj.getString("ID"));
             String name = obj.getString("Name");
             String email = obj.getString("Email");
@@ -228,7 +211,9 @@ public class Login extends AppCompatActivity implements AsyncResponse {
             String image = obj.getString("Image");
             String Profession = obj.getString("Profession");
             users user = new users(ID,name,email,password,image,Profession);
-            myIntent.putExtra("user",user.toJSON());
+            SharedPreferences myprefs = this.getSharedPreferences("user", MODE_WORLD_READABLE);
+            myprefs.edit().putString("user",user.toString()).apply();
+
             this.startActivity(myIntent);
         } else {
             Alert("Error", obj.getString("message").toString());

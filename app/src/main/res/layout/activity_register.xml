@@ -7,7 +7,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.bassem.donateme.register">
+    tools:context="com.bassem.donateme.register"
+    android:background="@color/colorPrimaryDark">
 
     <LinearLayout
         android:orientation="vertical"
@@ -23,29 +24,42 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
-            android:hint="Name"
-            android:id="@+id/txtName" />
+            android:hint="Name *"
+            android:id="@+id/txtName"
+            android:textColor="#FFFFFF"
+            android:textColorHighlight="#FFFFFF"
+            android:textColorHint="#FFFFFF"
+            android:textColorLink="#FFFFFF"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
             android:id="@+id/txtEmail"
-            android:hint="Email" />
+            android:hint="Email *"
+            android:textColor="#FFFFFF"
+            android:textColorHighlight="#FFFFFF"
+            android:textColorHint="#FFFFFF"
+            android:textColorLink="#FFFFFF"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:id="@+id/txtPassword"
-            android:hint="Password" />
+            android:hint="Password *"
+            android:textColor="#FFFFFF"
+            android:textColorHighlight="#FFFFFF"
+            android:textColorHint="#FFFFFF"
+            android:textColorLink="#FFFFFF"/>
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Register"
             android:id="@+id/btnRegister"
-            android:background="@color/colorAccent"
-            android:textColor="@color/colorButton"
-            android:layout_gravity="center_horizontal" />
+            android:background="#344256"
+            android:textColor="#FFFFFF"
+            android:layout_gravity="center_horizontal"
+            android:onClick="btnRegisterDBClick" />
     </LinearLayout>
 </RelativeLayout>

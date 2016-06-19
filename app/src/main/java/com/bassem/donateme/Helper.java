@@ -3,6 +3,7 @@ package com.bassem.donateme;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
@@ -78,6 +79,12 @@ public class Helper {
         writer.close();
         os.close();
         return con;
+    }
+    public static void Alert(AlertDialog alertdialog , String Title, String message) {
+
+        alertdialog.setTitle(Title);
+        alertdialog.setMessage(message);
+        alertdialog.show();
     }
 }
 
