@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="48dp"
+        android:layout_height="fill_parent"
+        android:layout_gravity="right" android:id="@+id/Badge" >
+
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="fill_parent"
+            android:clickable="true"
+            android:src="@mipmap/user_male" />
+
+        <!-- Badge Count -->
+        <TextView
+            android:id="@+id/actionbar_notifcation_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="99"
+            android:textColor="#f84007"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:padding="10dp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>

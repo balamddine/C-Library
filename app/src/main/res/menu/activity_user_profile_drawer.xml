@@ -4,7 +4,7 @@
     <menu>
     <group android:checkableBehavior="single" >
         <item
-            android:id="@+id/nav_settings"
+            android:id="@+id/nav_editprofile"
             android:icon="@drawable/ic_menu_settings"
             android:title="Edit Profile" />
         <item
@@ -22,6 +22,10 @@
             android:id="@+id/nav_users"
             android:icon="@drawable/ic_menu_users"
             android:title="Friends" />
+        <item
+            android:id="@+id/nav_usersGroup"
+            android:icon="@drawable/ic_menu_users_groups"
+            android:title="Groups" />
 
     <item
         android:id="@+id/nav_track"

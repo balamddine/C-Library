@@ -1,4 +1,4 @@
-package com.bassem.donateme;
+package com.bassem.donateme.Helpers;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -6,22 +6,15 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 /**
  * Created by bassem on 5/29/2016.
@@ -35,6 +28,7 @@ public class BackgroundWorker extends AsyncTask<String,String,String> {
     private ProgressDialog progressDialog;
     private AlertDialog alertdialog;
     private AsyncResponse asyncResponse;
+    private  String ProcessFinishErrorResult = "";
     public BackgroundWorker(Context context,AsyncResponse asyncResponse, HashMap<String, String> postData ) {
         this.context = context;
         this.postData = postData;
@@ -46,6 +40,21 @@ public class BackgroundWorker extends AsyncTask<String,String,String> {
         this.loadingMessage=LoadingMessage;
         this.asyncResponse = asyncResponse;
     }
+    public BackgroundWorker(Context context,AsyncResponse asyncResponse, HashMap<String, String> postData,boolean showLoadingMessage) {
+        this.context = context;
+        this.postData = postData;
+        this.showLoadingMessage=showLoadingMessage;
+        this.asyncResponse = asyncResponse;
+    }
+
+    public String getProcessFinishErrorResult() {
+        return ProcessFinishErrorResult;
+    }
+
+    public void setProcessFinishErrorResult(String processFinishErrorResult) {
+        ProcessFinishErrorResult = processFinishErrorResult;
+    }
+
     public void setLoadingMessage(String loadingMessage) {
         this.loadingMessage = loadingMessage;
     }
@@ -83,6 +92,7 @@ public class BackgroundWorker extends AsyncTask<String,String,String> {
 
         try {
             HttpURLConnection con = Helper.getConnection(requestURL,postDataParams);
+            con.setConnectTimeout(5000);
             int responseCode = con.getResponseCode();
             String line;
             if(responseCode == 200) {
@@ -106,6 +116,8 @@ public class BackgroundWorker extends AsyncTask<String,String,String> {
         if(this.showLoadingMessage) {
             this.progressDialog = new ProgressDialog(this.context);
             this.progressDialog.setMessage(this.loadingMessage);
+            this.progressDialog.setIndeterminate(true);
+            this.progressDialog.setCancelable(false);
             this.progressDialog.show();
         }
 
@@ -120,16 +132,32 @@ public class BackgroundWorker extends AsyncTask<String,String,String> {
 
         result = result.trim();
         if(this.asyncResponse != null) {
-            this.asyncResponse.processFinish(result);
+
+            JSONObject jsonObj = null;
+            try {
+                jsonObj = new JSONObject(result.toString());
+                JSONArray userJSON = jsonObj.getJSONArray("user");
+                JSONObject obj = userJSON.getJSONObject(0);
+                //if (obj.getString("status").equals("1")) {
+                    this.asyncResponse.processFinish(result);
+               // }
+               // else{
+                   // Toast.makeText(context, obj.getString("message"), Toast.LENGTH_LONG).show();
+               //     this.ProcessFinishErrorResult = obj.getString("message")
+               //     Alert("Error",obj.getString("message"));
+               // }
+            } catch (JSONException e) {
+                Alert("Error",e.getMessage());
+                e.printStackTrace();
+            }
         }
-       /*  alertdialog = new AlertDialog.Builder(context).create();
-        alertdialog.setTitle("Result");
-        alertdialog.setMessage(result);
-
-        Toast.makeText(context, result,Toast.LENGTH_LONG).show();*/
-
     }
-
+    public void Alert(String Title, String message) {
+        alertdialog = new AlertDialog.Builder(context).create();
+        alertdialog.setTitle(Title);
+        alertdialog.setMessage(message);
+        alertdialog.show();
+    }
     @Override
     protected void onProgressUpdate(String... values) {
         super.onProgressUpdate(values);

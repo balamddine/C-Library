@@ -27,7 +27,8 @@
         android:id="@+id/flContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize"/>
+        android:layout_marginTop="?attr/actionBarSize"
+        android:background="@color/colorPrimaryDark" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -36,6 +37,6 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/add"
-        app:backgroundTint="@color/common_plus_signin_btn_text_light_default" />
+        app:backgroundTint="@color/colorPrimary" />
 
 </android.support.design.widget.CoordinatorLayout>

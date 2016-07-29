@@ -8,6 +8,13 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS_PRIVILEGED" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <permission
+        android:name="com.bassem.donateme.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.bassem.donateme.permission.C2D_MESSAGE" />
 
     <application
         android:allowBackup="true"
@@ -15,21 +22,74 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Login">
-
-        </activity>
-        <activity android:name=".register" />
+        <activity
+            android:name=".Login"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".register"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".UserProfile"
             android:label="@string/title_activity_user_profile"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Default">
+        <activity
+            android:name=".Default"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".UserListing"
+            android:parentActivityName=".UserProfile">
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+
+        <!-- GCM Receiver -->
+        <receiver
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
+                <category android:name="com.gnirt69.gcmexample" />
+            </intent-filter>
+        </receiver>
+
+        <!-- GCM Receiver Service -->
+        <service
+            android:name=".Notifications.GCMPushReceiverService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+
+        <!-- GCM Registration Intent Service -->
+        <service
+            android:name=".Notifications.GCMRegistrationIntentService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAP34Z0EgJezOn8vzpqCqMJkPyptj9cuno" />
+
+        <activity
+            android:name=".editprofile"
+            android:parentActivityName=".UserProfile"
+            android:theme="@style/AppTheme.NoActionBar." />
+        <activity android:name=".editprofilepopup"
+            android:theme="@style/AppTheme.Dialog.noTitle."></activity>
     </application>
 
 </manifest>

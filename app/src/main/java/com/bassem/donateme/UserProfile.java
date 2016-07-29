@@ -1,17 +1,11 @@
 package com.bassem.donateme;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -22,20 +16,17 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bassem.donateme.Helpers.CircleTransform;
+import com.bassem.donateme.Helpers.Helper;
+import com.squareup.picasso.Picasso;
+
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 public class UserProfile extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,UserGallery.OnFragmentInteractionListener
@@ -49,12 +40,19 @@ public class UserProfile extends AppCompatActivity
     NavigationView navigationView;
     View HeaderView;
     JSONObject UserJson;
-
+    FragmentManager fragmentManager;
+    Fragment fragment = null;
+    int FabResources=0;
+    FloatingActionButton fab;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
-        setTitle(Helper.getApplicationName(this) + " - Profile");
+        setTitle("Profile");
+
+        //ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext()).build();
+        //ImageLoader.getInstance().init(config);
+
         SetControls();
         GetIntentKeys();
         SetFragments(savedInstanceState);
@@ -63,9 +61,10 @@ public class UserProfile extends AppCompatActivity
 
     }
 
+
     private void SetFragments(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
-            Fragment fragment = null;
+
             Class fragmentClass = null;
             fragmentClass = UserGallery.class;
             try {
@@ -74,7 +73,7 @@ public class UserProfile extends AppCompatActivity
                 e.printStackTrace();
             }
 
-            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.flContent, fragment,"Gallery").commit();
         }
     }
@@ -88,12 +87,9 @@ public class UserProfile extends AppCompatActivity
             UserJson =new JSONObject(userjson);
             litEmail.setText(UserJson.getString("Email"));
             litName.setText(UserJson.getString("Name") );
-            if (UserJson.has("Image")==true)
-            {
-                if(UserJson.getString("Image")!=null && !UserJson.getString("Image").equals("")) {
+
                     GetUserImage();
-                }
-            }
+
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -114,60 +110,41 @@ public class UserProfile extends AppCompatActivity
     }
 
     private void GetUserImage() {
-        new AsyncTask<Void, Void, Bitmap>() {
-            @Override
-            protected Bitmap doInBackground(Void... params) {
-                Bitmap bitmap = null;
-                try {
-                    String imageUrl = "";
-                    if(UserJson.getString("Image").contains("http"))
-                    {
-                        imageUrl = UserJson.getString("Image");
-                    }
-                    else{
-                        imageUrl =Helper.getImageUrl() + UserJson.getString("Image");
-                    }
-
-                    bitmap= BitmapFactory.decodeStream((InputStream) new URL(imageUrl).getContent());
-
-
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
+        String imageUrl = "";
+        try {
+            if (UserJson.has("Image")==true) {
+                if (UserJson.getString("Image") != null && !UserJson.getString("Image").equals("")) {
+                    imageUrl = Helper.getIfHttpUserImageUrl(UserJson.getString("Image"));
+                    Picasso.with(getApplicationContext()).load(imageUrl).transform(new CircleTransform()).into(imguser);
                 }
-                return bitmap;
             }
-            @Override
-            protected void onPostExecute(Bitmap bitmap) {
-                super.onPostExecute(bitmap);
-
-              //  imguser.setImageBitmap(bitmap);
-                imguser.setImageBitmap(RoundImage.getCircleBitmap(bitmap));
-
+            else{
+                Picasso.with(getApplicationContext()).load(R.mipmap.noimage).transform(new CircleTransform()).into(imguser);
             }
-        }.execute();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 
     private void SetDrawerActivitySettings() {
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+       fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setImageResource(R.drawable.ic_menu_gallery);
+            fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                Fragment myFragment = fragmentManager.findFragmentByTag("Gallery");
-                if (myFragment != null && myFragment.isVisible()) {
-                    Log.d("DD","Add gallery item");
+                FragmentManager fManager = getSupportFragmentManager();
+                if (fManager!=null) {
+                    Fragment myFragment = fManager.findFragmentByTag("Gallery");
+
+                    if (myFragment != null && myFragment.isVisible()) {
+                        Toast.makeText(UserProfile.this,"click on gallery",Toast.LENGTH_LONG).show();
+                    } else {
+                        startActivity(new Intent(getApplicationContext(), UserListing.class));
+                    }
                 }
-                else
-                {
-                    Log.d("DD","Add user item");
-                }
+
             }
         });
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -187,59 +164,50 @@ public class UserProfile extends AppCompatActivity
         }
     }
 
-   /* @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.user_profile, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }*/
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         Intent myIntent =null;
         int id = item.getItemId();
         Fragment fragment = null;
-        Class fragmentClass = null;
+        Class fragmentClass = UserGallery.class;
         String fragmentTag ="Gallery";
+        FabResources = R.drawable.ic_menu_gallery;
+        fab.setImageResource(FabResources);
         if (id == R.id.nav_users) {
             fragmentClass = UserFriends.class;
             fragmentTag ="Friends";
+            FabResources = R.mipmap.adduser;
         } else if (id == R.id.nav_gallery) {
             fragmentClass = UserGallery.class;
             fragmentTag ="Gallery";
+            FabResources = R.drawable.ic_menu_gallery;
         } else if (id == R.id.nav_track) {
 
+        }
+        else if(id==R.id.nav_editprofile)
+        {
+            myIntent = new Intent(this, editprofile.class);
+            this.startActivity(myIntent);
         }
         else if (id == R.id.nav_Logout) {
             SharedPreferences settings = this.getSharedPreferences("user", MODE_WORLD_READABLE);
             settings.edit().clear().commit();
+            this.finish();
             myIntent = new Intent(this, Default.class);
             this.startActivity(myIntent);
         }
+
         try {
             fragment = (Fragment) fragmentClass.newInstance();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, fragment,fragmentTag).commit();
+        if (fragment!=null){
+            fab.setImageResource(FabResources);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.flContent, fragment,fragmentTag).commit();
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
