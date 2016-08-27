@@ -19,6 +19,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.bassem.donateme.Helpers.DownloadUpload;
+import com.bassem.donateme.Helpers.Helper;
 import com.bassem.donateme.Notifications.GCMRegistrationIntentService;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -36,7 +38,8 @@ public class Default extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_default);
-
+       // Helper.CheckInternetConnection(this);
+        DownloadUpload.verifyStoragePermissions(this);
         SetControls();
         SetLogoAnimation();
         SetReceiver();
@@ -45,13 +48,16 @@ public class Default extends AppCompatActivity {
     }
 
     private void SetLogoAnimation() {
-        final Animation animBounce = AnimationUtils.loadAnimation(this, R.anim.animation);
-        imglogo.startAnimation(animBounce);
+        Animation animBounce = AnimationUtils.loadAnimation(this, R.anim.animation);
+        if(animBounce!=null){
+            imglogo.startAnimation(animBounce);
+        }
+
     }
 
     private void SetControls() {
         logolayout = (LinearLayout) findViewById(R.id.logolayout);
-        imglogo = (ImageView) findViewById(R.id.imglogo);
+        imglogo = (ImageView) findViewById(R.id.Defaultimglogo);
     }
 
     public void SetReceiver() {
@@ -67,12 +73,7 @@ public class Default extends AppCompatActivity {
                 //that means device is registered successfully
                 if (intent.getAction().equals(GCMRegistrationIntentService.REGISTRATION_SUCCESS)) {
                     //Getting the registration token from the intent
-
                     NotificationToken = intent.getStringExtra("token");
-                  //  SharedPreferences myprefs = Default.this.getSharedPreferences("notificatointoken", MODE_WORLD_READABLE);
-                 //   myprefs.edit().putString("notificatointoken",NotificationToken).apply();
-                //    Toast.makeText(Default.this, NotificationToken, Toast.LENGTH_LONG).show();
-                    //if the intent is not with success then displaying error messages
                 } else if (intent.getAction().equals(GCMRegistrationIntentService.REGISTRATION_ERROR)) {
                     Toast.makeText(Default.this, "GCM registration error!", Toast.LENGTH_LONG).show();
                 } else {

@@ -3,13 +3,15 @@
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="48dp"
         android:layout_height="fill_parent"
-        android:layout_gravity="right" android:id="@+id/Badge" >
+        android:layout_gravity="right"
+        android:id="@+id/Badge" >
 
 
         <ImageView
             android:layout_width="20dp"
             android:layout_height="fill_parent"
             android:clickable="true"
+            android:id="@+id/imgFriendReqNotification"
             android:src="@mipmap/user_male" />
 
         <!-- Badge Count -->
@@ -18,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="99"
+            android:text=""
             android:textColor="#f84007"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"

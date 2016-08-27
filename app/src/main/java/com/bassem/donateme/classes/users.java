@@ -1,6 +1,7 @@
-package com.bassem.donateme;
+package com.bassem.donateme.classes;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.bassem.donateme.Helpers.*;
 
@@ -182,5 +183,52 @@ public class users {
         PostData.put("profession", this.Profession);
         BackgroundWorker registerWorker= new BackgroundWorker(ctx,asR,PostData);
         registerWorker.execute(Helper.getPhpHelperUrl());
+    }
+
+    public static void GetAllFriendRequestsNotifications(Context context,com.bassem.donateme.Helpers.AsyncResponse asR, String id) {
+        HashMap PostData = new HashMap();
+        PostData.put("call", "GetFriendsRequest");
+        PostData.put("ID", id);
+
+        BackgroundWorker registerWorker= new BackgroundWorker(context,asR,PostData);
+        registerWorker.execute(Helper.getPhpHelperUrl());
+    }
+
+    public static users GetCurrentuser(Context context) {
+        users u = new users();
+        try {
+            String Cuserjson;
+            JSONObject CUserJson;
+            SharedPreferences myCprefs;
+
+            myCprefs = context.getSharedPreferences("user", context.MODE_WORLD_READABLE);
+            if(myCprefs!=null)
+            {
+                Cuserjson = myCprefs.getString("user", null);
+                if(Cuserjson !=null) {
+                    CUserJson = new JSONObject(Cuserjson);
+                    if (CUserJson != null) {
+                        u.setID(CUserJson.getInt("ID"));
+                        u.setName(CUserJson.getString("Name"));
+                        u.setEmail(CUserJson.getString("Email"));
+                        u.setPassword(CUserJson.getString("Password"));
+                        u.setProfession(CUserJson.getString("Profession"));
+                        if (CUserJson.has("Image") == true) {
+                            u.setImage(CUserJson.getString("Image"));
+                        }
+                        if (CUserJson.has("Accepted") == true) {
+                            u.setAccepted(CUserJson.getString("Accepted"));
+                        }
+                        if (CUserJson.has("UserNotificationToken") == true) {
+                            u.setUserNotificationToken(CUserJson.getString("UserNotificationToken"));
+                        }
+                    }
+                }
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return u;
     }
 }

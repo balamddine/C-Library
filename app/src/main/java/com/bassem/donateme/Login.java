@@ -11,6 +11,7 @@ import android.widget.*;
 
 import com.bassem.donateme.Helpers.AsyncResponse;
 import com.bassem.donateme.Helpers.Helper;
+import com.bassem.donateme.classes.users;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -43,7 +44,7 @@ public class Login extends AppCompatActivity implements AsyncResponse,GoogleApiC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         setTitle("Login");
-
+      //  Helper.CheckInternetConnection(this);
         GetNotificationToken();
         SetElements();
         SignInWithGoogle();

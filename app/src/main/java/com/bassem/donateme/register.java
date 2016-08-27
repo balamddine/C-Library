@@ -10,6 +10,7 @@ import android.widget.EditText;
 
 import com.bassem.donateme.Helpers.AsyncResponse;
 import com.bassem.donateme.Helpers.Helper;
+import com.bassem.donateme.classes.users;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,6 +28,7 @@ public class register extends AppCompatActivity implements AsyncResponse {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+     //   Helper.CheckInternetConnection(this);
         setTitle("Register");
         SetElements();
         GetNotificationToken();

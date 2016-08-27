@@ -133,11 +133,11 @@ public class BackgroundWorker extends AsyncTask<String,String,String> {
         result = result.trim();
         if(this.asyncResponse != null) {
 
-            JSONObject jsonObj = null;
+           // JSONObject jsonObj = null;
             try {
-                jsonObj = new JSONObject(result.toString());
-                JSONArray userJSON = jsonObj.getJSONArray("user");
-                JSONObject obj = userJSON.getJSONObject(0);
+             //   jsonObj = new JSONObject(result.toString());
+             //   JSONArray userJSON = jsonObj.getJSONArray("user");
+             //   JSONObject obj = userJSON.getJSONObject(0);
                 //if (obj.getString("status").equals("1")) {
                     this.asyncResponse.processFinish(result);
                // }
@@ -146,7 +146,7 @@ public class BackgroundWorker extends AsyncTask<String,String,String> {
                //     this.ProcessFinishErrorResult = obj.getString("message")
                //     Alert("Error",obj.getString("message"));
                // }
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 Alert("Error",e.getMessage());
                 e.printStackTrace();
             }

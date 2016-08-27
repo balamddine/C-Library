@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.bassem.donateme.Helpers.AsyncResponse;
+import com.bassem.donateme.classes.users;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;

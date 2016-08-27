@@ -2,12 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.bassem.donateme">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS_PRIVILEGED" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <permission
@@ -50,6 +51,13 @@
                 android:resource="@xml/searchable" />
         </activity>
 
+        <!--
+        <receiver android:name=".Helpers.NetworkChangeReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+        -->
         <!-- GCM Receiver -->
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
@@ -88,8 +96,21 @@
             android:name=".editprofile"
             android:parentActivityName=".UserProfile"
             android:theme="@style/AppTheme.NoActionBar." />
-        <activity android:name=".editprofilepopup"
-            android:theme="@style/AppTheme.Dialog.noTitle."></activity>
+        <activity
+            android:name=".editprofilepopup"
+            android:theme="@style/AppTheme.Dialog.noTitle." />
+        <activity
+            android:name=".activity_friend_requestPopUp"
+            android:parentActivityName=".UserProfile" />
+        <activity android:name=".activity_add_category" />
+        <activity
+            android:name=".activity_user_Files"
+            android:parentActivityName=".UserProfile" />
+        <activity android:name=".activity_file_sharing" />
+        <activity
+            android:name=".activity_file_sharing_popup"
+            android:theme="@style/AppTheme.Dialog.noTitle." />
+        <activity android:name=".user_repositry"></activity>
     </application>
 
 </manifest>

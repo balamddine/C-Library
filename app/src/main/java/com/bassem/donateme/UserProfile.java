@@ -2,13 +2,14 @@ package com.bassem.donateme;
 
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,10 +20,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bassem.donateme.Helpers.CircleTransform;
 import com.bassem.donateme.Helpers.Helper;
+import com.bassem.donateme.Helpers.NetworkChangeReceiver;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -50,9 +51,7 @@ public class UserProfile extends AppCompatActivity
         setContentView(R.layout.activity_user_profile);
         setTitle("Profile");
 
-        //ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext()).build();
-        //ImageLoader.getInstance().init(config);
-
+      //  Helper.CheckInternetConnection(this);
         SetControls();
         GetIntentKeys();
         SetFragments(savedInstanceState);
@@ -88,9 +87,7 @@ public class UserProfile extends AppCompatActivity
             litEmail.setText(UserJson.getString("Email"));
             litName.setText(UserJson.getString("Name") );
 
-                    GetUserImage();
-
-
+             GetUserImage();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -130,7 +127,7 @@ public class UserProfile extends AppCompatActivity
     private void SetDrawerActivitySettings() {
         setSupportActionBar(toolbar);
        fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setImageResource(R.drawable.ic_menu_gallery);
+        fab.setImageResource(R.mipmap.gallery);
             fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -139,7 +136,8 @@ public class UserProfile extends AppCompatActivity
                     Fragment myFragment = fManager.findFragmentByTag("Gallery");
 
                     if (myFragment != null && myFragment.isVisible()) {
-                        Toast.makeText(UserProfile.this,"click on gallery",Toast.LENGTH_LONG).show();
+
+                        startActivity(new Intent(getApplicationContext(), activity_add_category.class));
                     } else {
                         startActivity(new Intent(getApplicationContext(), UserListing.class));
                     }
@@ -172,7 +170,7 @@ public class UserProfile extends AppCompatActivity
         Fragment fragment = null;
         Class fragmentClass = UserGallery.class;
         String fragmentTag ="Gallery";
-        FabResources = R.drawable.ic_menu_gallery;
+        FabResources = R.mipmap.gallery;
         fab.setImageResource(FabResources);
         if (id == R.id.nav_users) {
             fragmentClass = UserFriends.class;
@@ -180,8 +178,11 @@ public class UserProfile extends AppCompatActivity
             FabResources = R.mipmap.adduser;
         } else if (id == R.id.nav_gallery) {
             fragmentClass = UserGallery.class;
-            fragmentTag ="Gallery";
-            FabResources = R.drawable.ic_menu_gallery;
+            fragmentTag = "Gallery";
+            FabResources = R.mipmap.gallery;
+        }else if(id==R.id.nav_repositry) {
+            myIntent = new Intent(this, user_repositry.class);
+            this.startActivity(myIntent);
         } else if (id == R.id.nav_track) {
 
         }

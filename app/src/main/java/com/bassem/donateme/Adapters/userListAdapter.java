@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bassem.donateme.Helpers.AsyncResponse;
@@ -15,7 +16,7 @@ import com.bassem.donateme.Helpers.BackgroundWorker;
 import com.bassem.donateme.Helpers.CircleTransform;
 import com.bassem.donateme.Helpers.Helper;
 import com.bassem.donateme.R;
-import com.bassem.donateme.users;
+import com.bassem.donateme.classes.users;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -31,9 +32,11 @@ public class userListAdapter extends ArrayAdapter<users> {
     Context context;
     int textViewResourceId;
     boolean IsFriendFragmentView = false;
+    boolean IsRequestFragmentView = false;
     String filterText = "Name";
     ImageView frdicon = null;
     TextView txtFname = null;
+    LinearLayout layoutacceptRequ;
     users myUser = null;
     List<users> USERS;
     List<users> FilteredUSERS;
@@ -55,6 +58,15 @@ public class userListAdapter extends ArrayAdapter<users> {
     public void setFriendFragmentView(boolean friendFragmentView) {
         IsFriendFragmentView = friendFragmentView;
     }
+
+    public boolean IsRequestFragmentView() {
+        return IsFriendFragmentView;
+    }
+
+    public void setRequestFragmentView(boolean requestFragmentView) {
+        IsRequestFragmentView = requestFragmentView;
+    }
+
 
     public userListAdapter(Context context, int textViewResourceId) {
         super(context, textViewResourceId);
@@ -112,17 +124,25 @@ public class userListAdapter extends ArrayAdapter<users> {
     private void SetLayoutElements(View view) {
         frdicon = (ImageView) view.findViewById(R.id.frdicon);
         txtFname = (TextView) view.findViewById(R.id.txtFname);
+        layoutacceptRequ = (LinearLayout) view.findViewById(R.id.layoutacceptRequ);
     }
 
     private void SetAddFriendButton(final View view, final users myUser) throws JSONException {
         ImageView btnaddasfriend = (ImageView) view.findViewById(R.id.btnaddasfriend);
+        final JSONObject FriendJson = new JSONObject(myUser.toJSON());
         if (this.IsFriendFragmentView) {
             btnaddasfriend.setVisibility(View.INVISIBLE);
-        } else {
+        }
+        else if (this.IsRequestFragmentView)
+        {
+            ModifyFriendRequest(view,myUser,FriendJson);
+            layoutacceptRequ.setVisibility(View.VISIBLE);
+        }
+        else {
             btnaddasfriend.setVisibility(View.VISIBLE);
         }
 
-        final JSONObject FriendJson = new JSONObject(myUser.toJSON());
+
         String call = "";
         if (FriendJson.getString("Accepted") != null && FriendJson.getString("Accepted").toString().equals("0")) {
             call = "CancelFriendRequest";
@@ -147,15 +167,54 @@ public class userListAdapter extends ArrayAdapter<users> {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            }
+        });
 
+    }
 
+    private void ModifyFriendRequest(final View view, users myUser, final JSONObject friendJson) {
+        ImageView btnaccept = (ImageView) view.findViewById(R.id.btnaccept);
+        ImageView btnDecline = (ImageView) view.findViewById(R.id.btnDecline);
+
+        btnaccept.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                try {
+                    HashMap PostData = new HashMap();
+                    PostData.put("call", "AcceptFriendRequest");
+                    PostData.put("ID", UserJson.getString("ID").toString());
+                    PostData.put("FriendID", friendJson.getString("ID").toString());
+                    PostData.put("Name", UserJson.getString("Name").toString());
+                    BackgroundWorker Worker = new BackgroundWorker(view.getContext(), (AsyncResponse) view.getContext(), PostData);
+                    Worker.execute(Helper.getPhpHelperUrl());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        btnDecline.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                try {
+                    HashMap PostData = new HashMap();
+                    PostData.put("call", "DeclineFriendRequest");
+                    PostData.put("ID", UserJson.getString("ID").toString());
+                    PostData.put("FriendID", friendJson.getString("ID").toString());
+                    BackgroundWorker Worker = new BackgroundWorker(view.getContext(), (AsyncResponse) view.getContext(), PostData);
+                    Worker.execute(Helper.getPhpHelperUrl());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
     }
 
     public int getCount() {
-        return USERS.size();
+
+        if (USERS!=null)
+        {
+            return USERS.size();
+        }
+        return 0;
     }
 
     public users getItem(int position) {
@@ -176,11 +235,7 @@ public class userListAdapter extends ArrayAdapter<users> {
             FilterResults results = new FilterResults();
             if (constraint != null && constraint.length() > 0) {
                 String filterString = constraint.toString().toLowerCase();
-
-
-
                 final List<users> list = USERS;
-
                 int count = list.size();
                 final ArrayList<users> nlist = new ArrayList<users>(count);
 

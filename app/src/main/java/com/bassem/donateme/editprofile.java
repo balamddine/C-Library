@@ -31,12 +31,14 @@ import android.widget.Toast;
 import com.bassem.donateme.Helpers.AsyncResponse;
 import com.bassem.donateme.Helpers.BackgroundWorker;
 import com.bassem.donateme.Helpers.Helper;
+import com.bassem.donateme.classes.users;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class editprofile extends AppCompatActivity implements AsyncResponse {
@@ -45,37 +47,65 @@ public class editprofile extends AppCompatActivity implements AsyncResponse {
     JSONObject UserJson;
     users myuser ;
     ImageView ProfileImage;
+    ImageView imgEditInfo;
     ListView lstUserInfo;
     ProgressDialog dialog;
     private Bitmap bitmap;
+    MenuItem btnEditImage;
+    String FriendEmail ="";
     private final static int RESULT_LOAD_IMG = 1;
     Uri selectedImage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
+      //  Helper.CheckInternetConnection(this);
 
+        SetControls();
+        initInstancesToolbar();
+        CheckSelectedUser();
+
+    }
+
+    private void CheckSelectedUser() {
         if (getIntent().getStringExtra("refresh")=="1")
         {
             finish();
             startActivity(getIntent());
         }
 
-
-
-        SetControls();
-        initInstancesToolbar();
-        SetUserContent();
-        SetUserInfoListView();
+         if(getIntent().getStringExtra("FriendEmail")!=null && !getIntent().getStringExtra("FriendEmail").equals("") ) {
+             FriendEmail = getIntent().getStringExtra("FriendEmail");
+             SetFriendProfile(FriendEmail);
+         }
+        else {
+             SharedPreferences myprefs = this.getSharedPreferences("user", MODE_WORLD_READABLE);
+             String userjson = myprefs.getString("user", null);
+             SetUserContent(userjson);
+             SetUserInfoListView(myuser);
+         }
     }
 
-    private void SetUserInfoListView() {
-        String[] values = new String[4];
-        values[0] = "Name: " + myuser.getName();
-        values[1] = "Email: " + myuser.getEmail();
-        values[2] = "Password: ******";
-        values[3] = "Profession: " + myuser.getProfession();
+    private void SetFriendProfile(String FriendEmail) {
+        //Toast.makeText(this,FriendEmail,Toast.LENGTH_LONG).show();
+        HashMap PostData = new HashMap();
+        PostData.put("call", "GetUserByEmail");
+        PostData.put("FriendEmail", FriendEmail);
+        BackgroundWorker Worker= new BackgroundWorker(this,this,PostData,true);
+        Worker.execute(Helper.getPhpHelperUrl());
 
+    }
+
+    private void SetUserInfoListView(users myuser) {
+        ArrayList<String> values= new ArrayList<String>();
+        values.add(0,"Name: " + myuser.getName());
+        values.add(1,"Email: " + myuser.getEmail());
+        values.add(2,"Profession: " + myuser.getProfession());
+
+        if(FriendEmail.equals("")){
+            values.add(3,"Password: ******");
+        }
         ArrayAdapter<String> itemsAdapter =
                 new ArrayAdapter<String>(this,R.layout.user_information_layout,R.id.txtinfovalue, values){
                         @Override
@@ -95,10 +125,10 @@ public class editprofile extends AppCompatActivity implements AsyncResponse {
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         ProfileImage = (ImageView) findViewById(R.id.imgProfile);
         lstUserInfo = (ListView) findViewById(R.id.lstUserInfo);
+        imgEditInfo = (ImageView) findViewById(R.id.imgEditInfo);
     }
-    private void SetUserContent() {
-        SharedPreferences myprefs = this.getSharedPreferences("user", MODE_WORLD_READABLE);
-        String userjson = myprefs.getString("user", null);
+    private void SetUserContent(String userjson) {
+
 
         try {
             UserJson = new JSONObject(userjson);
@@ -106,12 +136,12 @@ public class editprofile extends AppCompatActivity implements AsyncResponse {
             myuser.GetUserFromJson(UserJson);
             collapsingToolbarLayout.setTitle(UserJson.getString("Name"));
 
-            GetUserImage();
+            GetUserImage(UserJson);
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
-    private void GetUserImage() {
+    private void GetUserImage(JSONObject obj) {
         String imageUrl = "";
         try {
             if (UserJson.has("Image")==true) {
@@ -135,6 +165,7 @@ public class editprofile extends AppCompatActivity implements AsyncResponse {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.activity_edit_user_profile, menu);
+        btnEditImage = menu.findItem(R.id.nav_editprofileImage);
         return true;
     }
     @Override
@@ -203,22 +234,42 @@ public class editprofile extends AppCompatActivity implements AsyncResponse {
 
     @Override
     public void processFinish(String result) {
-
-
         try {
+            String call = Helper.GetJsonCallResult(result,"user");
+            String JsonStatus =Helper.GetJsonStatusResult(result,"user");
             JSONObject jsonObj = null;
             jsonObj = new JSONObject(result.toString());
             JSONArray userJSON = jsonObj.getJSONArray("user");
             JSONObject obj = userJSON.getJSONObject(0);
-            Picasso.with(getApplicationContext()).load(selectedImage).into(ProfileImage);
-            myuser.setImage(obj.getString("ImageName"));
-            UpdatePrefabs();
-            Toast.makeText(this, obj.getString("message"), Toast.LENGTH_LONG).show();
+            if(call.equals("GetUserByEmail"))
+            {
+                SetFriendLayout(result,obj);
+            }
+            else{
+                Picasso.with(getApplicationContext()).load(selectedImage).into(ProfileImage);
+                myuser.setImage(obj.getString("ImageName"));
+                UpdatePrefabs();
+                Toast.makeText(this, obj.getString("message"), Toast.LENGTH_LONG).show();
+            }
+
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
     }
+
+    private void SetFriendLayout(String result, JSONObject obj) throws JSONException {
+        users u = new users();
+        u.GetUserFromJson(obj);
+        collapsingToolbarLayout.setTitle(u.getName());
+        SetUserContent(result.toString());
+        SetUserInfoListView(u);
+        Picasso.with(getApplicationContext()).load(Helper.getIfHttpUserImageUrl(u.getImage())).into(ProfileImage);
+        imgEditInfo.setVisibility(View.INVISIBLE);
+        btnEditImage.setVisible(false);
+    }
+
 
     private void UpdatePrefabs() {
 

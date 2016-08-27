@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="userFriendmenu" >
+        <item>View Profile</item>
         <item>Share</item>
-        <item>Track</item>
+        <item>View Current Location</item>
         <item>Unfriend</item>
+    </string-array>
+    <string-array name="userlisting" >
+        <item>View Profile</item>
+    </string-array>
+    <string-array name="gallerylisting" >
+        <item>Remove</item>
     </string-array>
 </resources>
