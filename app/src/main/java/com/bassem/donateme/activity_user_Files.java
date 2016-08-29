@@ -83,7 +83,7 @@ public class activity_user_Files extends AppCompatActivity implements AsyncRespo
             myprefs.edit().putString("userFiles",result).apply();
             arlst = Helper.GetFilesArrayListFromJsonString(result);
             final LayoutInflater mInflater = (LayoutInflater)this.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            MyFilesListAdapter =new filesListAdapter(this, R.layout.fileslayout,arlst);
+            MyFilesListAdapter =new filesListAdapter(this, R.layout.fileslayout,arlst,false,false);
             if(listview!=null)
             {
                 listview.setAdapter(null);

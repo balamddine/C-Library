@@ -31,6 +31,7 @@ import com.bassem.donateme.Adapters.userListAdapter;
 import com.bassem.donateme.Helpers.AsyncResponse;
 import com.bassem.donateme.Helpers.BackgroundWorker;
 import com.bassem.donateme.Helpers.Helper;
+import com.bassem.donateme.classes.UploadService;
 import com.bassem.donateme.classes.users;
 
 import org.json.JSONException;
@@ -351,12 +352,12 @@ public class UserFriends extends Fragment implements AsyncResponse,SearchView.On
                   //  File myFile = new File(fileUri.getPath());
                   //  String s = myFile.getAbsolutePath();
                     // Get the path
-                    Intent intent = new Intent(getContext(),activity_file_sharing.class);
+                    Intent intent = new Intent(getContext(),UploadService.class);
                     intent.putExtra("Filepath", fileUri.toString());
                     intent.putExtra("FriendID", ""+FriendID);
                     intent.putExtra("Filesize", size);
 
-                    startActivity(intent);
+                    getContext().startService(intent);
                 }
                 break;
         }

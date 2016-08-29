@@ -1,7 +1,11 @@
 package com.bassem.donateme.Helpers;
 
 import android.app.Activity;
+import android.app.DownloadManager;
+import android.content.ActivityNotFoundException;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -9,6 +13,7 @@ import android.graphics.Bitmap;
 import android.app.AlertDialog;
 import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +21,8 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.bassem.donateme.activity_file_sharing;
 import com.bassem.donateme.classes.Categories;
@@ -28,6 +35,7 @@ import org.json.JSONObject;
 
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -182,16 +190,19 @@ public static  String GetJsonStatusResult(String result, String Fortype) {
 }
     public static  String GetJsonMessageResult(String result, String Fortype) {
         JSONObject jsonObj = null;
+        String Rvalue="";
         try {
             jsonObj = new JSONObject(result.toString());
             JSONArray userJSON = jsonObj.getJSONArray(Fortype);
             JSONObject obj = userJSON.getJSONObject(0);
-            return obj.getString("message");
+            Rvalue =obj.getString("message");
+
         } catch (JSONException e) {
+            Rvalue ="";
             e.printStackTrace();
         }
         // Getting JSON Array node
-        return "";
+        return Rvalue;
     }
     public static  String GetJsonCallResult(String result, String Fortype) {
         JSONObject jsonObj = null;
@@ -340,6 +351,13 @@ public static void SetFullScreen(AppCompatActivity activity) {
                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" //xlsx
         };
         return mimetypes;
+    }
+
+    public static void OpenFile(Context context,String pdfPath ) {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        Uri uri = Uri.parse(pdfPath); // a directory
+        intent.setDataAndType(uri, "*/*");
+        context.startActivity(Intent.createChooser(intent, "Open folder"));
     }
 }
 

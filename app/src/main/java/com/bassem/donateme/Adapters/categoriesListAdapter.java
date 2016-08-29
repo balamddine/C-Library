@@ -68,6 +68,7 @@ public class categoriesListAdapter extends ArrayAdapter<Categories> {
             e.printStackTrace();
         }
         myCategories = (Categories) getItem(position);
+        if(myCategories!=null)
         txtFname.setText(myCategories.getName().toString());
     }
 

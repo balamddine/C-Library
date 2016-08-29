@@ -1,16 +1,20 @@
 package com.bassem.donateme.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bassem.donateme.R;
 import com.bassem.donateme.classes.files;
+import com.bassem.donateme.sharing_download;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,6 +32,9 @@ public class filesListAdapter extends ArrayAdapter<files> {
     List<files> filteredFiles;
     TextView txtFname = null;
     TextView txtSharedWith =null;
+    ImageView img_Download = null;
+    boolean CanDownload=false;
+    boolean IsRepository=false;
     private ItemFilter mFilter = new ItemFilter();
 
     public filesListAdapter(Context context, int textViewResourceId) {
@@ -37,12 +44,22 @@ public class filesListAdapter extends ArrayAdapter<files> {
         filteredFiles = filteredFiles;
     }
 
-    public filesListAdapter(Context context, int textViewResourceId, List<files> items) {
+    public boolean isCanDownload() {
+        return CanDownload;
+    }
+
+    public void setCanDownload(boolean canDownload) {
+        CanDownload = canDownload;
+    }
+
+    public filesListAdapter(Context context, int textViewResourceId, List<files> items, boolean Candownload,boolean IsRepository) {
         super(context, textViewResourceId, items);
         this.context = context;
         this.textViewResourceId = textViewResourceId;
         this.files = items;
         filteredFiles = files;
+        this.CanDownload = Candownload;
+        this.IsRepository = IsRepository;
     }
 
     @Override
@@ -51,7 +68,12 @@ public class filesListAdapter extends ArrayAdapter<files> {
         if (view == null) {
             LayoutInflater vi;
             vi = LayoutInflater.from(getContext());
-            view = vi.inflate(R.layout.fileslayout, null);
+            if(IsRepository){
+                view = vi.inflate(R.layout.filerepositorylayout, null);
+            }else{
+                view = vi.inflate(R.layout.fileslayout, null);
+            }
+
         }
         SetLayoutElements(view);
         BindLayoutElemnts(view, position);
@@ -69,11 +91,39 @@ public class filesListAdapter extends ArrayAdapter<files> {
         myFiles = (files) getItem(position);
         txtFname.setText(myFiles.getName());
         txtSharedWith.setText(myFiles.getSharedWithUserName());
+        if(img_Download!=null)
+        {
+            if (CanDownload)
+            {
+                img_Download.setVisibility(View.VISIBLE);
+                SetDownloadBtn(myFiles);
+
+            }
+            else
+            {
+                img_Download.setVisibility(View.INVISIBLE);
+            }
+        }
+
+    }
+
+    private void SetDownloadBtn(final files myFiles) {
+        img_Download.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent downloadIntent = new Intent(context,sharing_download.class);
+                downloadIntent.putExtra("FileID",""+myFiles.getID());
+                downloadIntent.putExtra("FileName",myFiles.getName());
+                context.startActivity(downloadIntent);
+            }
+        });
     }
 
     private void SetLayoutElements(View view) {
         txtFname = (TextView) view.findViewById(R.id.txtFilename);
         txtSharedWith = (TextView) view.findViewById(R.id.txtSharedWith);
+        img_Download = (ImageView) view.findViewById(R.id.img_Download);
     }
 
     public int getCount() {
