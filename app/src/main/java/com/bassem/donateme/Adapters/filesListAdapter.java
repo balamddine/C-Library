@@ -3,6 +3,7 @@ package com.bassem.donateme.Adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,11 +11,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bassem.donateme.R;
+import com.bassem.donateme.classes.DownloadService;
 import com.bassem.donateme.classes.files;
-import com.bassem.donateme.sharing_download;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -112,10 +112,10 @@ public class filesListAdapter extends ArrayAdapter<files> {
             @Override
             public void onClick(View v) {
 
-                Intent downloadIntent = new Intent(context,sharing_download.class);
-                downloadIntent.putExtra("FileID",""+myFiles.getID());
-                downloadIntent.putExtra("FileName",myFiles.getName());
-                context.startActivity(downloadIntent);
+                Intent intent = new Intent(getContext(),DownloadService.class);
+                intent.putExtra("FileID",""+myFiles.getID());
+                intent.putExtra("FileName",myFiles.getName());
+                context.startService(intent);
             }
         });
     }

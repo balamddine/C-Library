@@ -17,7 +17,7 @@
         android:layout_height="60dp"
         android:scaleType="centerCrop"
         android:layout_marginTop="20dp"
-        />
+        android:src="@mipmap/user_male" />
 
     <TextView
         android:layout_width="match_parent"

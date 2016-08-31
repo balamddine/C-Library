@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -40,7 +41,7 @@ public class userListAdapter extends ArrayAdapter<users> {
     users myUser = null;
     List<users> USERS;
     List<users> FilteredUSERS;
-
+    CheckBox chkuser;
     private ItemFilter mFilter = new ItemFilter();
 
     public String getFilterText() {
@@ -53,6 +54,16 @@ public class userListAdapter extends ArrayAdapter<users> {
 
     public boolean isFriendFragmentView() {
         return IsFriendFragmentView;
+    }
+
+    public boolean ShowCheckBoxes = false;
+
+    public boolean isShowCheckBoxes() {
+        return ShowCheckBoxes;
+    }
+
+    public void setShowCheckBoxes(boolean showCheckBoxes) {
+        ShowCheckBoxes = showCheckBoxes;
     }
 
     public void setFriendFragmentView(boolean friendFragmentView) {
@@ -112,12 +123,20 @@ public class userListAdapter extends ArrayAdapter<users> {
             e.printStackTrace();
         }
         txtFname.setText(myUser.getName());
+
         String imageUrl = null;
         if (!myUser.getImage().toString().equals("")) {
             imageUrl = Helper.getIfHttpUserImageUrl(myUser.getImage());
             Picasso.with(context).load(imageUrl).transform(new CircleTransform()).into(frdicon);
         } else {
-            Picasso.with(context).load(R.mipmap.noimage).transform(new CircleTransform()).into(frdicon);
+            Picasso.with(context).load(R.mipmap.user_male).transform(new CircleTransform()).into(frdicon);
+        }
+        if(ShowCheckBoxes)
+        {
+            chkuser.setVisibility(View.VISIBLE);
+        }
+        else{
+            chkuser.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -125,6 +144,7 @@ public class userListAdapter extends ArrayAdapter<users> {
         frdicon = (ImageView) view.findViewById(R.id.frdicon);
         txtFname = (TextView) view.findViewById(R.id.txtFname);
         layoutacceptRequ = (LinearLayout) view.findViewById(R.id.layoutacceptRequ);
+        chkuser = (CheckBox)view.findViewById(R.id.chkuser);
     }
 
     private void SetAddFriendButton(final View view, final users myUser) throws JSONException {

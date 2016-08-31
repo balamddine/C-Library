@@ -14,13 +14,17 @@ import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
+import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -43,18 +47,14 @@ public class DownloadUpload {
 public String Upload(FileInputStream fileInputStream,String pathToOurFile,Map<String, String> params) {
     String reply="";
     try {
-
         URL url = new URL(urlServer);
         connection = (HttpURLConnection) url.openConnection();
-
         // Allow Inputs &amp; Outputs.
         connection.setDoInput(true);
         connection.setDoOutput(true);
         connection.setUseCaches(false);
-
         // Set HTTP method to POST.
         connection.setRequestMethod("POST");
-
         connection.setRequestProperty("Connection", "Keep-Alive");
         connection.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
         outputStream = new DataOutputStream(connection.getOutputStream());
@@ -89,10 +89,7 @@ public String Upload(FileInputStream fileInputStream,String pathToOurFile,Map<St
             outputStream.writeBytes(value);
             outputStream.writeBytes(lineEnd);
         }
-
-
         outputStream.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
-
         // Responses from the server (code and message)
         int serverResponseCode = connection.getResponseCode();
         String serverResponseMessage = connection.getResponseMessage();
@@ -109,12 +106,10 @@ public String Upload(FileInputStream fileInputStream,String pathToOurFile,Map<St
                     sb.append((char) chr);
                 }
                 reply = sb.toString();
-
             } finally {
                 in.close();
             }
         }
-
         fileInputStream.close();
         outputStream.flush();
         outputStream.close();
@@ -123,6 +118,32 @@ public String Upload(FileInputStream fileInputStream,String pathToOurFile,Map<St
     }
     return reply;
 }
+    public void Download(String dwnload_file_path, String downloadFolderPath,String FileName) {
+        try {
+            int count=0;
+            URL url = new URL(dwnload_file_path);
+            URLConnection conection = url.openConnection();
+            conection.connect();
+            // getting file length
+            // int lenghtOfFile = conection.getContentLength();
+            // input stream to read file - with 8k buffer
+            InputStream input = new BufferedInputStream(url.openStream(), 8192);
+            Log.d("DownloadedData","Data::" + dwnload_file_path);
+            // Output stream to write file
+            OutputStream output =   new FileOutputStream(downloadFolderPath + "/" +  FileName);;
+            byte data[] = new byte[1024];
+            while ((count = input.read(data)) != -1) {
+                output.write(data, 0, count);
+            }
+            // flushing output
+            output.flush();
+            // closing streams
+            output.close();
+            input.close();
+        } catch (Exception e) {
+            Log.e("Error: ", e.getMessage());
+        }
+    }
     // Storage Permissions
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
@@ -231,5 +252,6 @@ public String Upload(FileInputStream fileInputStream,String pathToOurFile,Map<St
     public static boolean isMediaDocument(Uri uri) {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
     }
+
 
 }

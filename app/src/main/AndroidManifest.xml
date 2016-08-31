@@ -78,7 +78,8 @@
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
         </service>
-        <service android:name="com.bassem.donateme.classes.UploadService"></service>
+        <service android:name=".classes.UploadService" />
+        <service android:name=".classes.DownloadService" />
         <!-- GCM Registration Intent Service -->
         <service
             android:name=".Notifications.GCMRegistrationIntentService"
@@ -102,7 +103,8 @@
         <activity
             android:name=".activity_friend_requestPopUp"
             android:parentActivityName=".UserProfile" />
-        <activity android:name=".activity_add_category" />
+        <activity android:name=".activity_add_category"
+            android:parentActivityName=".UserProfile"/>
         <activity
             android:name=".activity_user_Files"
             android:parentActivityName=".UserProfile" />
@@ -110,14 +112,27 @@
         <activity
             android:name=".activity_file_sharing_popup"
             android:theme="@style/AppTheme.Dialog.noTitle." />
-        <activity android:name=".user_repositry"
+        <activity
+            android:name=".user_repositry"
             android:parentActivityName=".UserProfile" />
-        <activity android:name=".sharing_download"
-            android:parentActivityName=".UserProfile" ></activity><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        <activity
+            android:name=".sharing_download"
+            android:parentActivityName=".UserProfile" />
+        <!--
+ ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name=".groups"
+            android:label="@string/title_activity_groups"
+            android:parentActivityName=".UserProfile"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activity_addgroup"
+            android:parentActivityName=".groups"></activity>
     </application>
 
 </manifest>

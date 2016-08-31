@@ -54,15 +54,10 @@ public class sharing_download extends AppCompatActivity {
     }
 
     private void CreateDownloadFolder() {
-       DownloadFolderPath= "/sdcard/" + FolderName+"/";
-        File Clibraryfolder = new File(DownloadFolderPath);
-        if(!Clibraryfolder.exists())
-        {
-            try{
-                Clibraryfolder.mkdir();
-            }catch(Exception e){
-                e.printStackTrace();
-            }
+       DownloadFolderPath = Environment.getExternalStorageDirectory().getPath() + "/" + FolderName;
+        File file = new File(DownloadFolderPath);
+        if (!file.exists()) {
+            file.mkdirs();
         }
     }
 
@@ -125,7 +120,7 @@ public class sharing_download extends AppCompatActivity {
                     Log.d("DownloadedData","Data::" + dwnload_file_path);
                     // Output stream to write file
 
-                OutputStream output =   new FileOutputStream(DownloadFolderPath + "test.pdf");;
+                OutputStream output =   new FileOutputStream(DownloadFolderPath + "/" + "test.pdf");;
 
                     byte data[] = new byte[1024];
                     long total = 0;

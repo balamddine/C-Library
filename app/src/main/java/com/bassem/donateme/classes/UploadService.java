@@ -125,7 +125,8 @@ public class UploadService extends IntentService {
                 .setContentTitle("Uploading...")
                 .setContentText("your file is being uploaded!");
 // Start a lengthy operation in a background thread
-        new Thread(
+
+       Thread ProgressThread =  new Thread(
                 new Runnable() {
                     @Override
                     public void run() {
@@ -148,7 +149,7 @@ public class UploadService extends IntentService {
                             }
                         }
                         // When the loop is finished, updates the notification
-                        mBuilder.setContentText("Download complete")
+                        mBuilder.setContentText("Upload complete")
                                 // Removes the progress bar
                                 .setProgress(0,0,false);
                         nm.notify(id, mBuilder.build());
@@ -158,11 +159,17 @@ public class UploadService extends IntentService {
                     }
                 }
 // Starts the thread by calling the run() method in its Runnable
-        ).start();
+        );
+        ProgressThread.start();
+
+        if(!ProgressThread.isAlive())
+        {
+            Toast.makeText(UploadService.this,"Upload completed",Toast.LENGTH_LONG).show();
+        }
     }
 
     private void ShowCategorySelection() {
-        Toast.makeText(UploadService.this,"Your upload is complete",Toast.LENGTH_LONG).show();
+
         int InsertedID  = Integer.parseInt(DBResult);
         Intent popUpintent = new Intent(UploadService.this, activity_file_sharing_popup.class);
         popUpintent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -173,6 +180,7 @@ public class UploadService extends IntentService {
     @Override
     public void onDestroy() {
         super.onDestroy();
+
         // Cancel the persistent notification.
       //  nm.cancel(0);
 

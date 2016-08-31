@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:background="#344256"
             android:textColor="#FFFFFF"
-            android:text="Add category"
+            android:text="Create New Category"
             android:onClick="BtnaddCategory_Click" />
 
 </LinearLayout>

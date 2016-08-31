@@ -1,10 +1,14 @@
 package com.bassem.donateme.Helpers;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.view.Window;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -29,6 +33,13 @@ public class BackgroundWorker extends AsyncTask<String,String,String> {
     private AlertDialog alertdialog;
     private AsyncResponse asyncResponse;
     private  String ProcessFinishErrorResult = "";
+
+    public boolean isShowLoadingMessage() {
+        return showLoadingMessage;
+    }
+    public void setShowLoadingMessage(boolean showLoadingMessage) {
+        this.showLoadingMessage = showLoadingMessage;
+    }
     public BackgroundWorker(Context context,AsyncResponse asyncResponse, HashMap<String, String> postData ) {
         this.context = context;
         this.postData = postData;
@@ -114,10 +125,11 @@ public class BackgroundWorker extends AsyncTask<String,String,String> {
 
     protected void onPreExecute() {
         if(this.showLoadingMessage) {
-            this.progressDialog = new ProgressDialog(this.context);
+            this.progressDialog = new ProgressDialog(context);
+            this.progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             this.progressDialog.setMessage(this.loadingMessage);
             this.progressDialog.setIndeterminate(true);
-            this.progressDialog.setCancelable(false);
+
             this.progressDialog.show();
         }
 
@@ -126,7 +138,7 @@ public class BackgroundWorker extends AsyncTask<String,String,String> {
 
     @Override
     protected void onPostExecute(String result) {
-        if(this.showLoadingMessage && this.progressDialog.isShowing()) {
+        if(this.showLoadingMessage && !this.progressDialog.equals(null) && this.progressDialog.isShowing()) {
             this.progressDialog.dismiss();
         }
 

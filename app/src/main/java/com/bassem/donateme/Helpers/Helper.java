@@ -195,7 +195,8 @@ public static  String GetJsonStatusResult(String result, String Fortype) {
             jsonObj = new JSONObject(result.toString());
             JSONArray userJSON = jsonObj.getJSONArray(Fortype);
             JSONObject obj = userJSON.getJSONObject(0);
-            Rvalue =obj.getString("message");
+            if(obj.has("message"))
+                Rvalue =obj.getString("message");
 
         } catch (JSONException e) {
             Rvalue ="";
@@ -359,6 +360,7 @@ public static void SetFullScreen(AppCompatActivity activity) {
         intent.setDataAndType(uri, "*/*");
         context.startActivity(Intent.createChooser(intent, "Open folder"));
     }
+
 }
 
 

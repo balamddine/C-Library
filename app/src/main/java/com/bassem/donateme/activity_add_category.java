@@ -21,6 +21,8 @@ public class activity_add_category extends AppCompatActivity implements AsyncRes
         setContentView(R.layout.activity_activity_add_category);
 
         txtCatName= (EditText)findViewById(R.id.txtCatName);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle("Create new Category");
     }
 
     public void BtnaddCategory_Click(View view) {

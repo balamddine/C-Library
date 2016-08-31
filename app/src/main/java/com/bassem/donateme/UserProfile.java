@@ -176,14 +176,21 @@ public class UserProfile extends AppCompatActivity
             fragmentClass = UserFriends.class;
             fragmentTag ="Friends";
             FabResources = R.mipmap.adduser;
-        } else if (id == R.id.nav_gallery) {
+        }
+        else if (id == R.id.nav_gallery) {
             fragmentClass = UserGallery.class;
             fragmentTag = "Gallery";
             FabResources = R.mipmap.gallery;
-        }else if(id==R.id.nav_repositry) {
+        }
+        else if(id==R.id.nav_repositry) {
             myIntent = new Intent(this, user_repositry.class);
             this.startActivity(myIntent);
-        } else if (id == R.id.nav_track) {
+        }
+        else if (id == R.id.nav_usersGroup) {
+            myIntent = new Intent(this, groups.class);
+            this.startActivity(myIntent);
+        }
+        else if (id == R.id.nav_track) {
 
         }
         else if(id==R.id.nav_editprofile)

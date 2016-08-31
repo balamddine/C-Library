@@ -151,7 +151,7 @@ public class editprofile extends AppCompatActivity implements AsyncResponse {
                 }
             }
             else{
-                Picasso.with(getApplicationContext()).load(R.mipmap.noimage).into(ProfileImage);
+                Picasso.with(getApplicationContext()).load(R.mipmap.user_male).into(ProfileImage);
             }
         } catch (JSONException e) {
             e.printStackTrace();

@@ -119,6 +119,17 @@ public class UserGallery extends Fragment implements AsyncResponse,SearchView.On
         inflater.inflate(R.menu.activity_gallery_fragment_menu, menu);
         SetSearchMenuItem(menu);
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.menu_refresh:
+                GetUserCategories();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
     private void SetSearchMenuItem(Menu menu) {
         SearchManager searchManager = (SearchManager)getContext().getSystemService(Context.SEARCH_SERVICE);
         searchMenuItem = menu.findItem(R.id.searchusr);
