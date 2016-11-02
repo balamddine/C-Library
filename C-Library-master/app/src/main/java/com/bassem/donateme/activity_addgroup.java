@@ -106,7 +106,6 @@ public class activity_addgroup extends AppCompatActivity implements AsyncRespons
             listview.setAdapter(null);
             if (MyuserListAdapter!=null)
             {
-
                 listview.setItemsCanFocus(false);
                 listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
                 listview.setAdapter(MyuserListAdapter);
@@ -124,7 +123,6 @@ public class activity_addgroup extends AppCompatActivity implements AsyncRespons
                             ctv.setChecked(true);
                             CheckedUsers.add(arlst.get(position));
                         }
-
                     }
                 });
             }

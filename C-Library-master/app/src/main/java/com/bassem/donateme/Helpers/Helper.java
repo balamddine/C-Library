@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.bassem.donateme.activity_file_sharing;
 import com.bassem.donateme.classes.Categories;
+import com.bassem.donateme.classes.Groups;
 import com.bassem.donateme.classes.files;
 import com.bassem.donateme.classes.users;
 
@@ -361,6 +362,28 @@ public static void SetFullScreen(AppCompatActivity activity) {
         context.startActivity(Intent.createChooser(intent, "Open folder"));
     }
 
+    public static ArrayList<Groups> GetGroupsArrayListFromJsonString(String result) {
+        ArrayList<Groups> listdata = new ArrayList<Groups>();
+        try {
+            JSONObject jsonObj = new JSONObject(result);
+            JSONArray jArray = jsonObj.getJSONArray("groups");
+            if (jArray != null) {
+                Groups fle= null;
+                for (int i=0;i<jArray.length();i++){
+                    fle = new Groups();
+                    fle.setID(Integer.parseInt(((JSONObject)jArray.get(i)).getString("ID")));
+                    fle.setName(((JSONObject)jArray.get(i)).getString("Name"));
+                    fle.setUsersIDs(((JSONObject)jArray.get(i)).getString("usersIDs"));
+                    fle.setAdminName(((JSONObject)jArray.get(i)).getString("AdminName"));
+                    listdata.add(fle);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return listdata;
+    }
 }
 
 
