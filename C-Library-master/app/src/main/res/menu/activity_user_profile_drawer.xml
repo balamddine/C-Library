@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<item android:title="My account">
+    <menu>
+    <group android:checkableBehavior="single" >
+        <item
+            android:id="@+id/nav_editprofile"
+            android:icon="@drawable/ic_menu_settings"
+            android:title="Edit Profile" />
+        <item
+            android:id="@+id/nav_gallery"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Gallery" />
+        <item
+            android:id="@+id/nav_repositry"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Received files" />
+
+     </group>
+    </menu>
+</item>
+    <item android:title="Dashboard">
+        <menu>
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_users"
+            android:icon="@drawable/ic_menu_users"
+            android:title="Friends" />
+        <item
+            android:id="@+id/nav_usersGroup"
+            android:icon="@drawable/ic_menu_users_groups"
+            android:title="Groups" />
+
+    <item
+        android:id="@+id/nav_track"
+        android:icon="@drawable/ic_menu_track"
+        android:title="Track Friends" />
+
+        <item
+            android:id="@+id/nav_Logout"
+            android:title="Logout" />
+    </group>
+        </menu>
+    </item>
+</menu>

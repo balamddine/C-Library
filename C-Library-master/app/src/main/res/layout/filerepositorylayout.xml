@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/lytfileRepository"
+    android:background="@color/colorPrimaryDark"
+    android:paddingBottom="10dp"
+    android:paddingTop="10dp"
+    android:paddingLeft="15dp">
+    <ImageView
+        android:id="@+id/filessicon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="4px"
+        android:layout_marginRight="10px"
+        android:layout_marginTop="4px"
+        android:background="@color/colorPrimaryDark"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/ic_launcher">
+    </ImageView>
+
+    <TextView
+        android:id="@+id/txtFilename"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="dsadsad"
+        android:textSize="15dp"
+        android:layout_gravity="center_vertical"
+        android:textColor="#FFFFFF"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/filessicon"
+        android:layout_toEndOf="@+id/filessicon"
+        android:layout_marginLeft="15dp">
+    </TextView>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/filessicon"
+        android:layout_alignLeft="@+id/txtFilename"
+        android:layout_alignStart="@+id/txtFilename">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Medium Text"
+            android:id="@+id/txtSharedWith"
+            android:textColor="#FFFFFF"
+            android:textSize="10dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/textView5"
+            android:layout_toEndOf="@+id/textView5"
+            android:layout_marginLeft="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Shared by :"
+            android:id="@+id/textView5"
+            android:textSize="8dp"
+            android:textColor="#FFFFFF"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:id="@+id/img_Download"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="20dp"
+        android:src="@mipmap/download" />
+
+</RelativeLayout>

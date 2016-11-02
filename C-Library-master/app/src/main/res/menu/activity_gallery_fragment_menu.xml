@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:com.bassem.donateme="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_refresh"
+        android:icon="@mipmap/refresh"
+        android:title="refresh"
+        android:orderInCategory="100"
+        com.bassem.donateme:showAsAction="never" />
+    <item android:id="@+id/searchusr"
+        android:title="Search"
+        android:icon="@mipmap/ic_action_search"
+        com.bassem.donateme:showAsAction="always"
+        com.bassem.donateme:actionViewClass="android.widget.SearchView" />
+</menu>

@@ -1,0 +1,52 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.bassem.donateme.UserFriends"
+    android:id="@+id/userFrnd"
+    android:background="@color/colorPrimaryDark">
+
+    <ListView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/lstFriends"
+        android:layout_gravity="left|top"
+        android:choiceMode="multipleChoice"
+        android:clickable="true"
+        android:longClickable="true"
+        android:minHeight="?android:attr/listPreferredItemHeight"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:divider="@drawable/list_divider"
+        android:dividerHeight="1dp"
+        />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center_vertical"
+        android:id="@+id/layoutNoDataFound"
+        android:visibility="invisible">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/imgNoDataFound"
+            android:layout_gravity="center"
+            android:src="@mipmap/nodatafound" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="No friends available"
+            android:id="@+id/textView2"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</FrameLayout>

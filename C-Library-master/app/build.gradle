@@ -1,0 +1,65 @@
+apply plugin: 'com.android.application'
+
+
+
+android {
+    signingConfigs {
+        config {
+            keyAlias 'clibrary'
+            keyPassword '123'
+            storeFile file('C:/Users/Bassem/.android/debug.keystore')
+            storePassword '123'
+        }
+        clibrary {
+            keyAlias 'clibrary'
+            keyPassword '123'
+            storeFile file('C:/Users/Bassem/clibrary.jks')
+            storePassword '123123'
+        }
+    }
+    compileSdkVersion 25
+    buildToolsVersion "23.0.3"
+    defaultConfig {
+        applicationId "com.bassem.donateme"
+        minSdkVersion 15
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+        }
+    }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+    }
+    useLibrary 'org.apache.http.legacy'
+}
+
+dependencies {
+    compile 'com.android.support:appcompat-v7:25.0.0'
+    compile 'com.android.support:design:25.0.0'
+
+    compile("com.google.android.gms:play-services-location:9.0.1")
+    compile("com.google.android.gms:play-services-maps:9.0.1")
+    compile("com.google.android.gms:play-services-gcm:9.0.1")
+    compile 'com.google.android.gms:play-services-auth:9.0.1'
+
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
+    compile files('libs/universal-image-loader-1.9.5.jar')
+    compile files('libs/picasso-2.5.2.jar')
+    compile 'org.apache.httpcomponents:httpclient:4.5'
+    compile 'org.apache.directory.studio:org.apache.commons.io:2.4'
+    compile 'org.apache.httpcomponents:httpclient-android:4.3.5.1'
+    compile 'org.apache.httpcomponents:httpmime:4.5.2'
+    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
+}
+
+apply plugin: 'com.google.gms.google-services'
