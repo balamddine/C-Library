@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/lytfriends"
+    android:background="@color/colorPrimaryDark"
+    android:paddingBottom="10dp"
+    android:paddingTop="10dp">
+    <ImageView
+        android:id="@+id/frdicon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="4px"
+        android:layout_marginRight="10px"
+        android:layout_marginTop="4px"
+        android:background="@color/colorPrimaryDark"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/user_male">
+    </ImageView>
+
+    <TextView
+        android:id="@+id/txtFname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="dsadsad"
+        android:textSize="15dp"
+        android:layout_gravity="center_vertical"
+        android:textColor="#FFFFFF"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/frdicon"
+        android:layout_toEndOf="@+id/frdicon"
+        android:layout_marginLeft="15dp">
+    </TextView>
+
+    <ImageView
+        android:id="@+id/btnaddasfriend"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@mipmap/adduser"
+        android:background="@color/colorPrimaryDark"
+        android:scaleType="centerCrop"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp" />
+
+    <LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignTop="@+id/btnaddasfriend"
+    android:layout_alignParentRight="true"
+    android:layout_alignParentEnd="true"
+    android:layout_centerVertical="true"
+    android:visibility="invisible"
+    android:id="@id/layoutacceptRequ">
+
+    <ImageView
+        android:id="@+id/btnaccept"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@mipmap/accept"
+        android:background="@color/colorPrimaryDark"
+        android:scaleType="centerCrop"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp" />
+
+        <ImageView
+        android:id="@+id/btnDecline"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@mipmap/decline"
+        android:background="#FFFFFF"
+        android:scaleType="centerCrop"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+            android:adjustViewBounds="true"
+            android:clickable="true"
+            android:backgroundTint="#FFFFFF"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="20dp" />
+
+
+    </LinearLayout>
+    <CheckBox
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/chkuser"
+    android:gravity="center"
+    android:clickable="true"
+    android:enabled="true"
+        android:buttonTint="#FFFFFF"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true" />
+</RelativeLayout>

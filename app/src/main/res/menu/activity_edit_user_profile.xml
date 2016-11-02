@@ -1,0 +1,8 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:com.bassem.donateme="http://schemas.android.com/apk/res-auto" >
+    <item android:id="@+id/nav_editprofileImage"
+        android:title="Edit"
+        android:icon="@mipmap/edit"
+        com.bassem.donateme:showAsAction="always" />
+
+</menu>

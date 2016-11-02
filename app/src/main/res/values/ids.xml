@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="imglayout" type="id">imglayout</item>
+    <item name="search" type="id">20</item>
+    <item name="btnacceptRequ" type="id" />
+    <item name="layoutacceptRequ" type="id" />
+</resources>
