@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.bassem.donateme.Adapters.userListAdapter;
 import com.bassem.donateme.Helpers.*;
@@ -44,15 +45,45 @@ public class UserListing extends AppCompatActivity implements com.bassem.donatem
     JSONObject UserJson;
     ImageLoader imageLoader;
     LinearLayout usrlistinglayoutNoDataFound;
+    String GroupID="";
+    String GroupName="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
       //  Helper.CheckInternetConnection(this);
-        setTitle("Discover people");
+        GroupID = getIntent().getStringExtra("GroupID");
+        GroupName = getIntent().getStringExtra("GroupName");
+        if(GroupID!=null && !GroupID.equals(""))
+        {
+            setTitle("Group: "+GroupName);
+        }else{
+            setTitle("Discover people");
+        }
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_user_listing);
         SetControls();
-        GetUsersList(true);
+        if(GroupID!=null && !GroupID.equals("")) {
+            GetGroupUsersListWithoutCurrentUser();
+        }
+        else{
+            GetUsersList(true);
+        }
+
+    }
+
+    private void GetGroupUsersListWithoutCurrentUser() {
+        try {
+            HashMap PostData = new HashMap();
+            PostData.put("call", "GetGroupUsersListWithoutCurrentUser");
+            PostData.put("GroupID", GroupID);
+
+            BackgroundWorker Worker= new BackgroundWorker(this,this,PostData,true);
+            Worker.execute(Helper.getPhpHelperUrl());
+        } catch (Exception e) {
+            Toast.makeText(this,"Cant get group users",Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
     }
 
     private void SetControls() {
@@ -72,6 +103,7 @@ public class UserListing extends AppCompatActivity implements com.bassem.donatem
             BackgroundWorker Worker= new BackgroundWorker(this,this,PostData,showloading);
             Worker.execute(Helper.getPhpHelperUrl());
         } catch (JSONException e) {
+            Toast.makeText(this,"Cant fetch users at this time",Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
     }
@@ -111,7 +143,8 @@ public class UserListing extends AppCompatActivity implements com.bassem.donatem
                 switch(CallFunction) {
                     case "AddAsAFriend":ModifyFriendListProcessFnish(result);break;
                     case "CancelFriendRequest": ModifyFriendListProcessFnish(result);break;
-                    case "GetAllUserExceptID": BindListViewAddapterProcessFinish(result); break;
+                    case "GetAllUserExceptID": BindListViewAddapterProcessFinish(result,true); break;
+                    case "GetGroupUsersListWithoutCurrentUser": BindListViewAddapterProcessFinish(result,false); break;
                 }
             } catch (JSONException ex) {
                 ex.printStackTrace();
@@ -123,7 +156,7 @@ public class UserListing extends AppCompatActivity implements com.bassem.donatem
         GetUsersList(false);
     }
 
-    private void BindListViewAddapterProcessFinish(String result) {
+    private void BindListViewAddapterProcessFinish(String result,boolean showcontrols) {
 
         String JsonStatus =Helper.GetJsonStatusResult(result,"user");
         if(JsonStatus.equals("0"))
@@ -140,6 +173,10 @@ public class UserListing extends AppCompatActivity implements com.bassem.donatem
         if(listview!=null)
         {
             listview.setAdapter(MyuserListAdapter);
+            if(showcontrols==false)
+            {
+                MyuserListAdapter.setShowControls(false);
+            }
             MyuserListAdapter.notifyDataSetChanged();
             listview.setTextFilterEnabled(true);
             registerForContextMenu(listview);

@@ -145,9 +145,6 @@ public class Helper extends AppCompatActivity {
                     if (((JSONObject)jArray.get(i)).getString("Accepted") !=null){
                         usr.setAccepted(((JSONObject)jArray.get(i)).getString("Accepted"));
                     }
-
-
-                   //
                     listdata.add(usr);
                 }
             }
@@ -374,6 +371,7 @@ public static void SetFullScreen(AppCompatActivity activity) {
                     fle.setID(Integer.parseInt(((JSONObject)jArray.get(i)).getString("ID")));
                     fle.setName(((JSONObject)jArray.get(i)).getString("Name"));
                     fle.setUsersIDs(((JSONObject)jArray.get(i)).getString("usersIDs"));
+                    fle.setAdminID(((JSONObject)jArray.get(i)).getString("AdminID"));
                     fle.setAdminName(((JSONObject)jArray.get(i)).getString("AdminName"));
                     listdata.add(fle);
                 }

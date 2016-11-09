@@ -42,6 +42,17 @@ public class userListAdapter extends ArrayAdapter<users> {
     List<users> USERS;
     List<users> FilteredUSERS;
     CheckBox chkuser;
+    ImageView btnaddasfriend=null;
+    boolean ShowControls =true;
+    public boolean isShowControls() {
+        return ShowControls;
+    }
+
+    public void setShowControls(boolean showControls) {
+        ShowControls = showControls;
+    }
+
+
     private ItemFilter mFilter = new ItemFilter();
 
     public String getFilterText() {
@@ -138,6 +149,14 @@ public class userListAdapter extends ArrayAdapter<users> {
         else{
             chkuser.setVisibility(View.INVISIBLE);
         }
+
+        if(!isShowControls())
+        {
+            btnaddasfriend.setVisibility(View.INVISIBLE);
+            layoutacceptRequ.setVisibility(View.INVISIBLE);
+            chkuser.setVisibility(View.INVISIBLE);
+        }
+
     }
 
     private void SetLayoutElements(View view) {
@@ -145,6 +164,7 @@ public class userListAdapter extends ArrayAdapter<users> {
         txtFname = (TextView) view.findViewById(R.id.txtFname);
         layoutacceptRequ = (LinearLayout) view.findViewById(R.id.layoutacceptRequ);
         chkuser = (CheckBox)view.findViewById(R.id.chkuser);
+        btnaddasfriend = (ImageView)view.findViewById(R.id.btnaddasfriend);
     }
 
     private void SetAddFriendButton(final View view, final users myUser) throws JSONException {

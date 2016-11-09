@@ -66,7 +66,7 @@ public class activity_addgroup extends AppCompatActivity implements AsyncRespons
                 PostData.put("call", "AddNewGroup");
                 PostData.put("AdminID", ""+us.getID());
                 PostData.put("AdminName", us.getName());
-                PostData.put("usersIDs", str);
+                PostData.put("usersIDs", str+","+us.getID());
                 PostData.put("Name", txtGroupName.getText().toString());
                 BackgroundWorker Worker= new BackgroundWorker(activity_addgroup.this,activity_addgroup.this,PostData);
                 Worker.execute(Helper.getPhpHelperUrl());

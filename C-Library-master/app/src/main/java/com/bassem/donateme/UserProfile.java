@@ -24,6 +24,8 @@ import android.widget.TextView;
 import com.bassem.donateme.Helpers.CircleTransform;
 import com.bassem.donateme.Helpers.Helper;
 import com.bassem.donateme.Helpers.NetworkChangeReceiver;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -201,6 +203,8 @@ public class UserProfile extends AppCompatActivity
         else if (id == R.id.nav_Logout) {
             SharedPreferences settings = this.getSharedPreferences("user", MODE_WORLD_READABLE);
             settings.edit().clear().commit();
+            FacebookSdk.sdkInitialize(getApplicationContext());
+            LoginManager.getInstance().logOut();
             this.finish();
             myIntent = new Intent(this, Default.class);
             this.startActivity(myIntent);

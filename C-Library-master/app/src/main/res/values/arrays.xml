@@ -12,4 +12,10 @@
     <string-array name="gallerylisting" >
         <item>Remove</item>
     </string-array>
+    <string-array name="grouplisting" >
+        <item>Delete Group</item>
+        <item>Share</item>
+    </string-array>
+
+
 </resources>

@@ -37,22 +37,26 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static java.security.AccessController.getContext;
+
 public class groups extends AppCompatActivity implements AsyncResponse, SearchView.OnQueryTextListener {
     public groupsListAdapter MyGroupsListAdapter= null ;
     private MenuItem searchMenuItem;
     private SearchView searchView;
     private ListView listview;
     ArrayList<Groups> arlst=null;
+    Context context;
+    users CurrentUser = new users();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("My Groups");
 
         setContentView(R.layout.activity_groups);
-
+        SetElements();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        context = this;
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,15 +66,17 @@ public class groups extends AppCompatActivity implements AsyncResponse, SearchVi
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         GetUserGroups();
-        SetElements();
+
     }
 
     private void SetElements() {
+
         listview =(ListView)findViewById(R.id.lstGroups);
+
     }
 
     private void GetUserGroups() {
-        users CurrentUser = users.GetCurrentuser(this);
+        CurrentUser = users.GetCurrentuser(this);
         HashMap PostData = new HashMap();
         PostData.put("call", "GetUserGroups");
         PostData.put("UserID",""+CurrentUser.getID());
@@ -108,43 +114,6 @@ public class groups extends AppCompatActivity implements AsyncResponse, SearchVi
     }
 
 
-    public void onCreateContextMenu(ContextMenu menu, View v,
-                                    ContextMenu.ContextMenuInfo menuInfo) {
-
-        if (v.getId()==R.id.lstGallery) {
-            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
-            if(arlst.get(info.position).getID()==-1)// default category
-            {
-                return;
-            }
-            menu.setHeaderTitle(arlst.get(info.position).getName());
-            String[] menuItems = getResources().getStringArray(R.array.gallerylisting);
-            for (int i = 0; i<menuItems.length; i++) {
-                menu.add(Menu.NONE, i, i, menuItems[i]);
-            }
-        }
-    }
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-      /*  switch (item.getTitle().toString()) {
-            case "Remove":
-                try {
-                    HashMap PostData = new HashMap();
-                    PostData.put("call", "RemoveGroup");
-                    PostData.put("CatID", "" + arlst.get(info.position).getID());
-                    PostData.put("UserID", "" + users.GetCurrentuser(this).getID());
-                    BackgroundWorker Worker = new BackgroundWorker(this, this, PostData);
-                    Worker.execute(Helper.getPhpHelperUrl());
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return true;
-        }*/
-        return true;
-    }
-
     @Override
     public void processFinish(String result) {
         try{
@@ -170,6 +139,8 @@ public class groups extends AppCompatActivity implements AsyncResponse, SearchVi
                     MyGroupsListAdapter.notifyDataSetChanged();
                     listview.setTextFilterEnabled(true);
                     registerForContextMenu(listview);
+                    SetListViewClickEvent();
+
                 }
             }
         }
@@ -180,6 +151,65 @@ public class groups extends AppCompatActivity implements AsyncResponse, SearchVi
 
     }
 
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        //if (v.getId() == R.id.lstGallery) {
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+            menu.setHeaderTitle(arlst.get(info.position).getName());
+            String[] menuItems = getResources().getStringArray(R.array.grouplisting);
+            for (int i = 0; i < menuItems.length; i++) {
+                if (menuItems[i].toLowerCase().equals("delete group")) {
+                    if (Integer.parseInt(arlst.get(info.position).getAdminID()) == CurrentUser.getID())// default category
+                    {
+                        menu.add(Menu.NONE, i, i, menuItems[i]);
+                    }
+                } else {
+                    menu.add(Menu.NONE, i, i, menuItems[i]);
+                }
+            }
+        //}
+    }
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        switch (item.getTitle().toString()) {
+            case "Remove":
+                try {
+                    HashMap PostData = new HashMap();
+                    PostData.put("call", "RemoveGroup");
+                    PostData.put("CatID", "" + arlst.get(info.position).getID());
+                    PostData.put("UserID", "" + users.GetCurrentuser(this).getID());
+                    BackgroundWorker Worker = new BackgroundWorker(this, this, PostData);
+                    Worker.execute(Helper.getPhpHelperUrl());
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return true;
+            case "Share":
+
+                return true;
+        }
+        return true;
+    }
+
+    private void SetListViewClickEvent() {
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position,
+                                    long id) {
+                Intent intent = new Intent();
+                intent.setClass(context,UserListing.class);
+                String GroupID = ""+arlst.get(position).getID();
+                String GroupName = ""+arlst.get(position).getName();
+                intent.putExtra("GroupID", GroupID);
+                intent.putExtra("GroupName", GroupName);
+                startActivity(intent);
+            }
+        });
+    }
     @Override
     public boolean onQueryTextSubmit(String s) {
         return false;

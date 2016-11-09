@@ -28,6 +28,10 @@ public class groupsListAdapter extends ArrayAdapter<Groups> {
     List<Groups> GROUPS;
     List<Groups> FilteredGROPUS;
     TextView txtgroupname = null;
+    TextView txtGroupSharedWith= null;
+    TextView txtSharedWith= null;
+
+
 
     private ItemFilter mFilter = new ItemFilter();
 
@@ -60,20 +64,21 @@ public class groupsListAdapter extends ArrayAdapter<Groups> {
     }
 
     private void BindLayoutElemnts(View view, int position) {
-        /*SharedPreferences myprefs = this.context.getSharedPreferences("user", this.context.MODE_WORLD_READABLE);
-        userjson = myprefs.getString("user", null);
-        try {
-            UserJson = new JSONObject(userjson);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }*/
         myGroups = (Groups) getItem(position);
-        if(myGroups!=null)
+        if(myGroups!=null){
             txtgroupname.setText(myGroups.getName().toString());
+            txtGroupSharedWith.setText(myGroups.getAdminName().toString());
+            txtSharedWith.setText("Created by :");
+
+        }
+
     }
 
     private void SetLayoutElements(View view) {
         txtgroupname = (TextView) view.findViewById(R.id.txtgroupname);
+        txtGroupSharedWith= (TextView) view.findViewById(R.id.txtGroupSharedWith);
+        txtSharedWith= (TextView) view.findViewById(R.id.txtSharedWith);
+
     }
 
     public int getCount() {
