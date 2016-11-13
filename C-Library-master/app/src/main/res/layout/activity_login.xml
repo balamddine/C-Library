@@ -25,22 +25,26 @@
             android:id="@+id/txtEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Email *"
+            android:hint="    Email *"
             android:textColor="#FFFFFF"
             android:textColorHighlight="#FFFFFF"
             android:textColorHint="#FFFFFF"
-            android:textColorLink="#FFFFFF" />
+            android:textColorLink="#FFFFFF"
+            android:drawableLeft="@mipmap/user_male_login"
+            android:drawablePadding="1dp" />
 
         <EditText
             android:id="@+id/txtPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password *"
+            android:hint=" Password *"
             android:inputType="textPassword"
             android:textColor="#FFFFFF"
             android:textColorHighlight="#FFFFFF"
             android:textColorHint="#FFFFFF"
-            android:textColorLink="#FFFFFF"/>
+            android:textColorLink="#FFFFFF"
+            android:drawableLeft="@mipmap/password"
+            android:drawablePadding="1dp" />
 
         <Button
             android:id="@+id/BtnLogin"

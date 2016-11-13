@@ -5,11 +5,13 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,6 +31,7 @@ import com.bassem.donateme.Helpers.BackgroundWorker;
 import com.bassem.donateme.Helpers.Helper;
 import com.bassem.donateme.classes.Categories;
 import com.bassem.donateme.classes.Groups;
+import com.bassem.donateme.classes.UploadService;
 import com.bassem.donateme.classes.users;
 
 import org.json.JSONException;
@@ -171,6 +174,9 @@ public class groups extends AppCompatActivity implements AsyncResponse, SearchVi
             }
         //}
     }
+    public static int GroupID=0;
+
+    private static final int FILE_SELECT_CODE = 0;
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
@@ -179,7 +185,7 @@ public class groups extends AppCompatActivity implements AsyncResponse, SearchVi
                 try {
                     HashMap PostData = new HashMap();
                     PostData.put("call", "RemoveGroup");
-                    PostData.put("CatID", "" + arlst.get(info.position).getID());
+                    PostData.put("GroupID", "" + arlst.get(info.position).getID());
                     PostData.put("UserID", "" + users.GetCurrentuser(this).getID());
                     BackgroundWorker Worker = new BackgroundWorker(this, this, PostData);
                     Worker.execute(Helper.getPhpHelperUrl());
@@ -189,12 +195,53 @@ public class groups extends AppCompatActivity implements AsyncResponse, SearchVi
                 }
                 return true;
             case "Share":
+                GroupID = arlst.get(info.position).getID();
+                SetSharing();
 
                 return true;
         }
         return true;
     }
+    private void SetSharing() {
 
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("*/*");
+        String[] mimetypes =Helper.GetmimeTypes();
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
+        //
+        try {
+            startActivityForResult(Intent.createChooser(intent, "Select a File to Upload"), FILE_SELECT_CODE);
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(this, "Please install a File Manager.", Toast.LENGTH_SHORT).show();
+        }
+    }
+    public static final int RESULT_OK = -1;
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case FILE_SELECT_CODE:
+                if (resultCode == RESULT_OK) {
+                    // Get the Uri of the selected file
+                    Uri fileUri = data.getData();
+                    long size = Helper.GetFileSize(this,fileUri);
+                    Log.d("File", "File Uri: " + fileUri.toString());
+                    String Fid = ""+data.getStringExtra("FID");
+                    //  File myFile = new File(fileUri.getPath());
+                    //  String s = myFile.getAbsolutePath();
+                    // Get the path
+                    Intent intent = new Intent(this,UploadService.class);
+                    intent.putExtra("Filepath", fileUri.toString());
+                    intent.putExtra("GroupID", ""+GroupID);
+                    intent.putExtra("FriendID", "-1");
+                    intent.putExtra("Filesize", size);
+
+                    this.startService(intent);
+                }
+                break;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
     private void SetListViewClickEvent() {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

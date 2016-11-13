@@ -44,6 +44,7 @@ public class UploadService extends IntentService {
     public long totalSize=0;
     String filePath ="";
     String Fname ="";
+    String GroupID ="";
     String FriendID ="";
     DownloadUpload du = new DownloadUpload();
     Map<String, String> Postparams =null;
@@ -61,6 +62,8 @@ public class UploadService extends IntentService {
                 FPath =  Uri.parse(intent.getStringExtra("Filepath"));
             if(extras.containsKey("Filesize"))
                 totalSize=  intent.getLongExtra("Filesize",0);
+            if(extras.containsKey("GroupID"))
+                GroupID = intent.getStringExtra("GroupID");
         }
         filePath = DownloadUpload.getPath(this,FPath);
         Fname = getFileName(FPath);
@@ -70,7 +73,8 @@ public class UploadService extends IntentService {
         Postparams.put("call","ShareFile");
         Postparams.put("UserID", ""+u.getID());
         Postparams.put("FriendID", ""+FriendID);
-        Postparams.put("GroupID", "-1");
+
+        Postparams.put("GroupID", GroupID);
         Postparams.put("Name", u.getName());
        String res = UploadFile();
         ShowCategorySelection();
@@ -171,11 +175,15 @@ public class UploadService extends IntentService {
 
     private void ShowCategorySelection() {
 
-        int InsertedID  = Integer.parseInt(DBResult);
-        Intent popUpintent = new Intent(UploadService.this, activity_file_sharing_popup.class);
-        popUpintent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        popUpintent.putExtra("InsertedID", ""+InsertedID);
-        startActivity(popUpintent);
+        if(!DBResult.equals(""))
+        {
+            int InsertedID  = Integer.parseInt(DBResult);
+            Intent popUpintent = new Intent(UploadService.this, activity_file_sharing_popup.class);
+            popUpintent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            popUpintent.putExtra("InsertedID", ""+InsertedID);
+            startActivity(popUpintent);
+        }
+
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.bassem.donateme;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -49,7 +50,7 @@ import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
 
 public class Login extends AppCompatActivity implements AsyncResponse,GoogleApiClient.OnConnectionFailedListener {
     EditText txtEmail,txtPassword;
-
+Context context;
     AlertDialog alertdialog;
     LinearLayout LoginBox ;
     GoogleSignInOptions gso;
@@ -66,14 +67,14 @@ public class Login extends AppCompatActivity implements AsyncResponse,GoogleApiC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = this;
+        GetNotificationToken();
         getfaceboookkeyhash();
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
         setContentView(R.layout.activity_login);
         setTitle("Login");
 
-      //  Helper.CheckInternetConnection(this);
-        GetNotificationToken();
         SetElements();
         setFacebook();
         SignInWithGoogle();
@@ -164,7 +165,7 @@ public class Login extends AppCompatActivity implements AsyncResponse,GoogleApiC
 
             @Override
             public void onError(FacebookException e) {
-
+                Toast.makeText(context,"Error : "+e.getMessage().toString(),Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -174,8 +175,12 @@ public class Login extends AppCompatActivity implements AsyncResponse,GoogleApiC
         if(Registerintent!=null && Registerintent.hasExtra("email"))
         {
             Toast.makeText(this,"you have successfully registered",Toast.LENGTH_LONG).show();
-            txtEmail.setText(Registerintent.getStringExtra("email"));
-            txtPassword.setText(Registerintent.getStringExtra("password"));
+            String email = Registerintent.getStringExtra("email");
+            String password = Registerintent.getStringExtra("password");
+            txtEmail.setText(email);
+            txtPassword.setText(password);
+            LogintoDB(email,password);
+
         }
     }
 
@@ -186,6 +191,10 @@ public class Login extends AppCompatActivity implements AsyncResponse,GoogleApiC
         if(Defaultintent!=null && Defaultintent.hasExtra("token"))
         {
             Notitoken =  Defaultintent.getStringExtra("token");
+        }
+        else
+        {
+            Notitoken ="";
         }
     }
 
@@ -260,15 +269,19 @@ public class Login extends AppCompatActivity implements AsyncResponse,GoogleApiC
         String email =txtEmail.getText().toString();
         String password = txtPassword.getText().toString();
         if (valid) {
-            users user = new users();
-            user.setEmail(email);
-            user.setImage("");
-            user.setName("");
-            user.setPassword(password);
-            user.setFBuserid("");
-            user.setUserNotificationToken(Notitoken);
-            user.SignIn(this,this,false);
+            LogintoDB(email,password);
         }
+    }
+
+    private void LogintoDB(String email, String password) {
+        users user = new users();
+        user.setEmail(email);
+        user.setImage("");
+        user.setName("");
+        user.setPassword(password);
+        user.setFBuserid("");
+        user.setUserNotificationToken(Notitoken);
+        user.SignIn(this,this,false);
     }
 
     private Boolean Validate() {
@@ -301,6 +314,7 @@ public class Login extends AppCompatActivity implements AsyncResponse,GoogleApiC
                 }
                 this.finish();
             } catch (JSONException ex) {
+                Toast.makeText(this,"An error has occured while trying to login ",Toast.LENGTH_LONG).show();
                 ex.printStackTrace();
             }
         }
@@ -330,7 +344,7 @@ public class Login extends AppCompatActivity implements AsyncResponse,GoogleApiC
             myprefs.edit().putString("user",user.toJSON()).apply();
             this.startActivity(myIntent);
         } catch (JSONException ex) {
-            Alert("Error ","Signing in to google Failed");
+            Toast.makeText(this,"Signing in to google Failed",Toast.LENGTH_LONG).show();
             Log.d("Google sign in error",ex.getMessage());
             ex.printStackTrace();
         }
@@ -353,11 +367,11 @@ public class Login extends AppCompatActivity implements AsyncResponse,GoogleApiC
 
             this.startActivity(myIntent);
         } else {
-
-            Alert("Error", obj.getString("message").toString());
+            Toast.makeText(this,obj.getString("message").toString(),Toast.LENGTH_LONG).show();
 
         }
         } catch (JSONException ex) {
+            Toast.makeText(this,"error : "+ex.getMessage(),Toast.LENGTH_LONG).show();
             ex.printStackTrace();
         }
     }
@@ -381,7 +395,8 @@ public class Login extends AppCompatActivity implements AsyncResponse,GoogleApiC
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         Log.d("Google Error",connectionResult.getErrorMessage());
-        Alert("Error", connectionResult.toString());
+        Toast.makeText(this,"Error : "+connectionResult.getErrorMessage(),Toast.LENGTH_LONG).show();
+
     }
 
 

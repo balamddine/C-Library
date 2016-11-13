@@ -156,9 +156,6 @@ public class users {
         PostData.put("name", this.Name);
         PostData.put("email", this.Email);
         PostData.put("password", this.Password);
-        PostData.put("image", "");
-        PostData.put("image", "");
-        PostData.put("profession", "");
         PostData.put("notificationtocken", this.UserNotificationToken);
 
         BackgroundWorker registerWorker= new BackgroundWorker(ctx,asR,PostData);

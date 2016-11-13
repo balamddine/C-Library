@@ -117,6 +117,7 @@ public class BackgroundWorker extends AsyncTask<String,String,String> {
             }
         } catch (Exception ex) {
             response = "{\"user\":[{\"status\":\"0\", \"message\":\"Exception : "+ex.getMessage()+" \"}]}";;
+            Toast.makeText(context,"Error : "+ex.getMessage(),Toast.LENGTH_LONG).show();
             ex.printStackTrace();
             Log.d("exception",ex.toString());
         }
@@ -161,7 +162,7 @@ public class BackgroundWorker extends AsyncTask<String,String,String> {
                //     Alert("Error",obj.getString("message"));
                // }
             } catch (Exception e) {
-                Alert("Error",e.getMessage());
+                Toast.makeText(context,"Error : "+e.getMessage().toString(),Toast.LENGTH_LONG).show();
                 e.printStackTrace();
             }
         }

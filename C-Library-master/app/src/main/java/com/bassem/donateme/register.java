@@ -107,6 +107,7 @@ public class register extends AppCompatActivity implements AsyncResponse {
                 JSONObject obj = userJSON.getJSONObject(0);
                 String status =obj.getString("status");
                 if (status.equals("1")) {
+                    
                     myIntent.putExtra("email",txtEmail.getText().toString());
                     myIntent.putExtra("password",txtPassword.getText().toString());
                     this.startActivity(myIntent);
