@@ -22,10 +22,15 @@ import android.widget.Toast;
 import com.bassem.donateme.Helpers.DownloadUpload;
 import com.bassem.donateme.Helpers.Helper;
 import com.bassem.donateme.Notifications.GCMRegistrationIntentService;
+import com.bassem.donateme.classes.DeviceToken;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.android.gms.iid.InstanceID;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.FirebaseInstanceIdService;
 
-public class Default extends AppCompatActivity {
+public class Default extends AppCompatActivity{
 
     LinearLayout logolayout;
     ImageView imglogo;
@@ -33,19 +38,23 @@ public class Default extends AppCompatActivity {
     private String NotificationToken = "";
     //Creating a broadcast receiver for gcm registration
     public  BroadcastReceiver  mRegistrationBroadcastReceiver ;
-
+    public DeviceToken mydevicetoken = new DeviceToken();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_default);
+      Toast.makeText(this,mydevicetoken.getDeviceToken(),Toast.LENGTH_LONG).show();
        // Helper.CheckInternetConnection(this);
         DownloadUpload.verifyStoragePermissions(this);
+        SetReceiver();
         SetControls();
         SetLogoAnimation();
-        SetReceiver();
+
         checkIfPreferencesExist();
         checkOrientation();
     }
+
+
 
     private void SetLogoAnimation() {
         Animation animBounce = AnimationUtils.loadAnimation(this, R.anim.animation);
@@ -74,6 +83,8 @@ public class Default extends AppCompatActivity {
                 if (intent.getAction().equals(GCMRegistrationIntentService.REGISTRATION_SUCCESS)) {
                     //Getting the registration token from the intent
                     NotificationToken = intent.getStringExtra("token");
+                   // Toast.makeText(Default.this, "GCM registration Token : "+NotificationToken, Toast.LENGTH_LONG).show();
+                    Log.d("Device Token",NotificationToken);
                 } else if (intent.getAction().equals(GCMRegistrationIntentService.REGISTRATION_ERROR)) {
                     Toast.makeText(Default.this, "GCM registration error!", Toast.LENGTH_LONG).show();
                 } else {

@@ -184,7 +184,7 @@ public class userListAdapter extends ArrayAdapter<users> {
 
 
         String call = "";
-        if (FriendJson.getString("Accepted") != null && FriendJson.getString("Accepted").toString().equals("0")) {
+        if (FriendJson.getString("Accepted") != null && FriendJson.getString("Accepted").toString().equals("1")) {
             call = "CancelFriendRequest";
             btnaddasfriend.setImageResource(R.mipmap.canceluser);
 

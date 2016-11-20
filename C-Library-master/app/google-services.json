@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "772859588421",
-    "project_id": "donateme-e33e8"
+    "project_number": "257395991526",
+    "project_id": "firebase-clibrary1"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:772859588421:android:51581c424df50956",
+        "mobilesdk_app_id": "1:257395991526:android:51581c424df50956",
         "android_client_info": {
           "package_name": "com.bassem.donateme"
         }
       },
       "oauth_client": [
         {
-          "client_id": "772859588421-4qo7lgnqfbripabkb11793bm49f33fnq.apps.googleusercontent.com",
+          "client_id": "257395991526-47p7c8gj5j8klkb79lfmvi1bed3jak75.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.bassem.donateme",
-            "certificate_hash": "CCB8C1EBCB9C875E9561A31659730AD0E67E759C"
+            "certificate_hash": "69C7527F19692A44F5D0E8D3EA3C6EF37F0DD85F"
           }
         },
         {
-          "client_id": "772859588421-uvlh80t3mbjlete9urbh353p7mfa46vl.apps.googleusercontent.com",
+          "client_id": "257395991526-030nhjttc2tor28ac60c2bajnmva2aot.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCcZZoptVQ5Rc7KI6NhqoBwnPriCpb5aSE"
+          "current_key": "AIzaSyBtlYTK-7Zmi4lGPnyjGD_dAyLUaAzlitg"
         }
       ],
       "services": {

@@ -124,16 +124,18 @@ public class users {
     public  void SignIn(Context ctx, com.bassem.donateme.Helpers.AsyncResponse asR, boolean SSO){
         HashMap PostData = new HashMap();
         PostData.put("call", (SSO==false?"login":"GetUser"));
-        PostData.put("email", (!this.FBuserid.equals("")?"":this.Email));
+        PostData.put("email", (this.FBuserid!=null && !this.FBuserid.equals("")?"":this.Email));
         PostData.put("password", this.Password);
         PostData.put("notificationtocken", this.UserNotificationToken);
         if(SSO)
         {
-            if(!this.FBuserid.equals(""))
+            if(this.FBuserid!=null && !this.FBuserid.equals(""))
             {
                 PostData.put("FBuserID", this.FBuserid);
             }
-
+            else{
+                PostData.put("FBuserID", "");
+            }
         }
         PostData.put("name", this.Name);
         PostData.put("image", this.Image);

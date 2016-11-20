@@ -95,7 +95,7 @@
             android:id="@+id/btnGoogleSignIn"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="30dp" android:visibility="invisible" />
+            android:paddingTop="30dp"  />
 
     </LinearLayout>
 

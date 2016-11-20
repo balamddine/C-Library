@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.bassem.donateme.Helpers.AsyncResponse;
 import com.bassem.donateme.Helpers.Helper;
@@ -20,7 +21,7 @@ public class register extends AppCompatActivity implements AsyncResponse {
     EditText txtEmail,txtPassword,txtName;
     JSONArray userJSON= null;
     users user=null;
-    String Notitoken;
+    String Notitoken="";
     SharedPreferences notificatoinpref;
     AlertDialog alertdialog;
 
@@ -30,8 +31,9 @@ public class register extends AppCompatActivity implements AsyncResponse {
         setContentView(R.layout.activity_register);
      //   Helper.CheckInternetConnection(this);
         setTitle("Register");
-        SetElements();
         GetNotificationToken();
+        SetElements();
+
 
 
     }
@@ -68,6 +70,9 @@ public class register extends AppCompatActivity implements AsyncResponse {
         if(Defaultintent!=null && Defaultintent.hasExtra("token"))
         {
             Notitoken =  Defaultintent.getStringExtra("token");
+        }
+        else{
+            Notitoken ="";
         }
     }
     private Boolean Validate() {
@@ -113,7 +118,8 @@ public class register extends AppCompatActivity implements AsyncResponse {
                     this.startActivity(myIntent);
                 }
                 else{
-                    Helper.Alert(alertdialog,"Error", obj.getString("message").toString());
+                    Toast.makeText(this, obj.getString("message").toString(),Toast.LENGTH_LONG).show();
+
                 }
 
                 } catch (JSONException e) {

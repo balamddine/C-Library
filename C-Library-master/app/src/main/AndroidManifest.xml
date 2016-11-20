@@ -52,13 +52,6 @@
                 android:resource="@xml/searchable" />
         </activity>
 
-        <!--
-        <receiver android:name=".Helpers.NetworkChangeReceiver">
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-        </receiver>
-        -->
         <!-- GCM Receiver -->
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
@@ -67,7 +60,7 @@
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
 
-                <category android:name="com.gnirt69.gcmexample" />
+                <category android:name="com.bassem.donateme" />
             </intent-filter>
         </receiver>
 
@@ -81,6 +74,7 @@
         </service>
         <service android:name=".classes.UploadService" />
         <service android:name=".classes.DownloadService" />
+
         <!-- GCM Registration Intent Service -->
         <service
             android:name=".Notifications.GCMRegistrationIntentService"

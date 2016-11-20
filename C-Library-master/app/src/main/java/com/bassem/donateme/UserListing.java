@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -132,8 +133,8 @@ public class UserListing extends AppCompatActivity implements com.bassem.donatem
     }
     @Override
     public void processFinish(String result) {
-
-        if (result != null) {
+        Log.d("Background worker results ",result);
+        if (result != null && !result.equals("")) {
             try {
                 JSONObject jsonObj = new JSONObject(result.toString());
                 // Getting JSON Array node
@@ -149,6 +150,9 @@ public class UserListing extends AppCompatActivity implements com.bassem.donatem
             } catch (JSONException ex) {
                 ex.printStackTrace();
             }
+        }
+        else{
+            Toast.makeText(this,"An error has occured",Toast.LENGTH_LONG).show();
         }
     }
 
@@ -176,6 +180,9 @@ public class UserListing extends AppCompatActivity implements com.bassem.donatem
             if(showcontrols==false)
             {
                 MyuserListAdapter.setShowControls(false);
+            }
+            else{
+                MyuserListAdapter.setShowControls(true);
             }
             MyuserListAdapter.notifyDataSetChanged();
             listview.setTextFilterEnabled(true);
