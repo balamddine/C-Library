@@ -42,36 +42,49 @@ public class activity_friend_requestPopUp extends AppCompatActivity implements A
     }
 
     private void SetNotificationsList() {
-        Intent myPopUpRequestIntent = getIntent();
-        String result=  myPopUpRequestIntent.getStringExtra("jsonResult");
-        arlst = Helper.GetArrayListFromJsonString(result);
-        if(arlst!=null && arlst.size() >0)
-        {
-            MyuserListAdapter =new userListAdapter(this, R.layout.friendslayout,arlst);
-            MyuserListAdapter.setRequestFragmentView(true);
-            if(lstPopUpFriendsRequest!=null)
-            {
-                lstPopUpFriendsRequest.setAdapter(null);
-                lstPopUpFriendsRequest.setAdapter(MyuserListAdapter);
-                this.progressDialog.hide();
-               // MyuserListAdapter.notifyDataSetChanged();
-               // lstPopUpFriendsRequest.setTextFilterEnabled(accept);
-            }
-        }
-        else{
-            this.progressDialog.hide();
-        }
+            users u = users.GetCurrentuser(this);
+            users.GetAllFriendRequestsNotifications(this,this,u.getID()+"");
     }
 
     @Override
     public void processFinish(String result) {
         String call = Helper.GetJsonCallResult(result,"user");
         String JsonStatus =Helper.GetJsonStatusResult(result,"user");
-
-        if (call.equals("AcceptFriendRequest")) {
-            Intent myuserFriendIntent=new Intent(this,UserProfile.class);
-          startActivity(myuserFriendIntent);
+        if (!call.equals("GetFriendsRequest")) {
+            SetNotificationsList();
+            //Intent myuserFriendIntent=new Intent(this,UserProfile.class);
+            //startActivity(myuserFriendIntent);
         }
+        else{
+            try{
+                arlst = Helper.GetArrayListFromJsonString(result);
+                if(arlst!=null && arlst.size() >0)
+                {
+                    MyuserListAdapter =new userListAdapter(this, R.layout.friendslayout,arlst);
+                    MyuserListAdapter.setRequestFragmentView(true);
+                    if(lstPopUpFriendsRequest!=null)
+                    {
+                        lstPopUpFriendsRequest.setAdapter(null);
+                        lstPopUpFriendsRequest.setAdapter(MyuserListAdapter);
+                        this.progressDialog.hide();
+                        MyuserListAdapter.notifyDataSetChanged();
+                        // lstPopUpFriendsRequest.setTextFilterEnabled(accept);
+                    }
+                }
+                else{
+                    lstPopUpFriendsRequest.setAdapter(null);
+                    MyuserListAdapter.notifyDataSetChanged();
+                    this.progressDialog.hide();
+                }
+            }
+            catch(Exception ex)
+            {
+                lstPopUpFriendsRequest.setAdapter(null);
+                MyuserListAdapter.notifyDataSetChanged();
+            }
+
+
+       }
         //else  if (call.equals("DeclineFriendRequest")) {
         //}
 

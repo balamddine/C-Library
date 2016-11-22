@@ -43,7 +43,6 @@ public class Default extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_default);
-      Toast.makeText(this,mydevicetoken.getDeviceToken(),Toast.LENGTH_LONG).show();
        // Helper.CheckInternetConnection(this);
         DownloadUpload.verifyStoragePermissions(this);
         SetReceiver();

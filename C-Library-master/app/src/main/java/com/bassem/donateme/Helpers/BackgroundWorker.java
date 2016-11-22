@@ -113,12 +113,13 @@ public class BackgroundWorker extends AsyncTask<String,String,String> {
                 }
             } else {
                 response = "{\"user\":[{\"status\":\"0\", \"message\":\"Response code : "+responseCode+" \"}]}";
+                Toast.makeText(context,"Response code: "+responseCode,Toast.LENGTH_LONG).show();
                 Log.d("PostResponseAsyncTask", responseCode + "");
             }
         } catch (Exception ex) {
             response = "{\"user\":[{\"status\":\"0\", \"message\":\"Exception : "+ex.getMessage()+" \"}]}";;
             Toast.makeText(context,"Error : "+ex.getMessage(),Toast.LENGTH_LONG).show();
-            ex.printStackTrace();
+            //ex.printStackTrace();
             Log.d("exception",ex.toString());
         }
 

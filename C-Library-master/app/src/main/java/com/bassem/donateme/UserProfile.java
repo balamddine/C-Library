@@ -20,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bassem.donateme.Helpers.CircleTransform;
 import com.bassem.donateme.Helpers.Helper;
@@ -230,4 +231,5 @@ public class UserProfile extends AppCompatActivity
     public void onFragmentInteraction(Uri uri) {
 
     }
+
 }
