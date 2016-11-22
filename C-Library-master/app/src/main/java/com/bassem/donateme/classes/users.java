@@ -22,6 +22,15 @@ public class users {
     private String Image;
     private String Profession;
     private String Accepted;
+    private String location;
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
     public String getFBuserid() {
         return FBuserid;

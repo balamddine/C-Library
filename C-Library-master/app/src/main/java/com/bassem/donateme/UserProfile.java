@@ -194,7 +194,8 @@ public class UserProfile extends AppCompatActivity
             this.startActivity(myIntent);
         }
         else if (id == R.id.nav_track) {
-
+            myIntent = new Intent(this, TrackActivity.class);
+            this.startActivity(myIntent);
         }
         else if(id==R.id.nav_editprofile)
         {

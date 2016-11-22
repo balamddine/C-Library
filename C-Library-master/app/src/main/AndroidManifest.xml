@@ -1,139 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.bassem.donateme">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.bassem.donateme">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS_PRIVILEGED" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+<uses-permission android:name="android.permission.GET_ACCOUNTS" />
+<uses-permission android:name="android.permission.GET_ACCOUNTS_PRIVILEGED" />
+<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+<uses-permission android:name="android.permission.WAKE_LOCK" />
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<permission android:name="com.bassem.donateme.permission.C2D_MESSAGE" android:protectionLevel="signature" />
 
-    <permission
-        android:name="com.bassem.donateme.permission.C2D_MESSAGE"
-        android:protectionLevel="signature" />
+<uses-permission android:name="com.bassem.donateme.permission.C2D_MESSAGE" />
 
-    <uses-permission android:name="com.bassem.donateme.permission.C2D_MESSAGE" />
+<application android:allowBackup="true" android:icon="@mipmap/ic_launcher" android:label="@string/app_name"
+    android:supportsRtl="true" android:theme="@style/AppTheme">
+    <activity android:name=".Login" android:screenOrientation="portrait" />
+    <activity android:name=".register" android:screenOrientation="portrait" />
+    <activity android:name=".UserProfile" android:label="@string/title_activity_user_profile"
+        android:screenOrientation="portrait" android:theme="@style/AppTheme.NoActionBar" />
+    <activity android:name=".Default" android:screenOrientation="portrait">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
 
-    <application
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        >
-        <activity
-            android:name=".Login"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".register"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".UserProfile"
-            android:label="@string/title_activity_user_profile"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".Default"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+    </activity>
+    <activity android:name=".UserListing" android:parentActivityName=".UserProfile">
+        <meta-data android:name="android.app.searchable" android:resource="@xml/searchable" />
+    </activity>
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".UserListing"
-            android:parentActivityName=".UserProfile">
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
-        </activity>
+    <!-- GCM Receiver -->
+    <receiver android:name="com.google.android.gms.gcm.GcmReceiver" android:exported="true"
+        android:permission="com.google.android.c2dm.permission.SEND">
+        <intent-filter>
+            <action android:name="com.google.android.c2dm.intent.RECEIVE" />
 
-        <!-- GCM Receiver -->
-        <receiver
-            android:name="com.google.android.gms.gcm.GcmReceiver"
-            android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND">
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            <category android:name="com.bassem.donateme" />
+        </intent-filter>
+    </receiver>
 
-                <category android:name="com.bassem.donateme" />
-            </intent-filter>
-        </receiver>
+    <!-- GCM Receiver Service -->
+    <service android:name=".Notifications.GCMPushReceiverService" android:exported="false">
+        <intent-filter>
+            <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+        </intent-filter>
+    </service>
+    <service android:name=".classes.UploadService" />
+    <service android:name=".classes.DownloadService" />
 
-        <!-- GCM Receiver Service -->
-        <service
-            android:name=".Notifications.GCMPushReceiverService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-            </intent-filter>
-        </service>
-        <service android:name=".classes.UploadService" />
-        <service android:name=".classes.DownloadService" />
+    <!-- GCM Registration Intent Service -->
+    <service android:name=".Notifications.GCMRegistrationIntentService" android:exported="false">
+        <intent-filter>
+            <action android:name="com.google.android.gms.iid.InstanceID" />
+        </intent-filter>
+    </service>
 
-        <!-- GCM Registration Intent Service -->
-        <service
-            android:name=".Notifications.GCMRegistrationIntentService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.android.gms.iid.InstanceID" />
-            </intent-filter>
-        </service>
-
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAP34Z0EgJezOn8vzpqCqMJkPyptj9cuno" />
-
-        <activity
-            android:name=".editprofile"
-            android:parentActivityName=".UserProfile"
-            android:theme="@style/AppTheme.NoActionBar." />
-        <activity
-            android:name=".editprofilepopup"
-            android:theme="@style/AppTheme.Dialog.noTitle." />
-        <activity
-            android:name=".activity_friend_requestPopUp"
-            android:parentActivityName=".UserProfile" />
-        <activity android:name=".activity_add_category"
-            android:parentActivityName=".UserProfile"/>
-        <activity
-            android:name=".activity_user_Files"
-            android:parentActivityName=".UserProfile" />
-        <activity android:name=".activity_file_sharing" />
-        <activity
-            android:name=".activity_file_sharing_popup"
-            android:theme="@style/AppTheme.Dialog.noTitle." />
-        <activity
-            android:name=".user_repositry"
-            android:parentActivityName=".UserProfile" />
-        <activity
-            android:name=".sharing_download"
-            android:parentActivityName=".UserProfile" />
-        <!--
+   <!-- <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAP34Z0EgJezOn8vzpqCqMJkPyptj9cuno" />
+-->
+    <activity android:name=".editprofile" android:parentActivityName=".UserProfile" android:theme="@style/AppTheme.NoActionBar." />
+    <activity android:name=".editprofilepopup" android:theme="@style/AppTheme.Dialog.noTitle." />
+    <activity android:name=".activity_friend_requestPopUp" android:parentActivityName=".UserProfile" />
+    <activity android:name=".activity_add_category" android:parentActivityName=".UserProfile" />
+    <activity android:name=".activity_user_Files" android:parentActivityName=".UserProfile" />
+    <activity android:name=".activity_file_sharing" />
+    <activity android:name=".activity_file_sharing_popup" android:theme="@style/AppTheme.Dialog.noTitle." />
+    <activity android:name=".user_repositry" android:parentActivityName=".UserProfile" />
+    <activity android:name=".sharing_download" android:parentActivityName=".UserProfile" />
+    <!--
  ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
         -->
 
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
+    <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
 
-        <activity
-            android:name=".groups"
-            android:label="@string/title_activity_groups"
-            android:parentActivityName=".UserProfile"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activity_addgroup"
-            android:parentActivityName=".groups"></activity>
-        <activity android:name="com.facebook.FacebookActivity"
-            android:configChanges=
-                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name" />
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
-    </application>
+    <activity android:name=".groups" android:label="@string/title_activity_groups"
+        android:parentActivityName=".UserProfile" android:theme="@style/AppTheme.NoActionBar" />
+    <activity android:name=".activity_addgroup" android:parentActivityName=".groups"></activity>
+    <activity android:name="com.facebook.FacebookActivity" android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+        android:label="@string/app_name" />
+    <meta-data android:name="com.facebook.sdk.ApplicationId"
+        android:value="@string/facebook_app_id" />
+    <activity android:name=".TrackActivity" android:label="@string/title_activity_track">
+    </activity>
+    <meta-data android:name="com.google.android.geo.API_KEY"
+        android:value="@string/google_maps_key" />
 
+</application>
 </manifest>

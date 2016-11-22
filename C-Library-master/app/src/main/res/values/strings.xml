@@ -13,4 +13,5 @@
     <string name="title_activity_editprofile">editprofile</string>
     <string name="title_activity_groups">groups</string>
     <string name="facebook_app_id">1113307525419440</string>
+    <string name="title_activity_track">Map</string>
 </resources>

@@ -72,15 +72,19 @@ public class activity_friend_requestPopUp extends AppCompatActivity implements A
                     }
                 }
                 else{
-                    lstPopUpFriendsRequest.setAdapter(null);
-                    MyuserListAdapter.notifyDataSetChanged();
-                    this.progressDialog.hide();
+                    if(lstPopUpFriendsRequest!=null) {
+                        lstPopUpFriendsRequest.setAdapter(null);
+                        MyuserListAdapter.notifyDataSetChanged();
+                        this.progressDialog.hide();
+                    }
                 }
             }
             catch(Exception ex)
             {
-                lstPopUpFriendsRequest.setAdapter(null);
-                MyuserListAdapter.notifyDataSetChanged();
+                if(lstPopUpFriendsRequest!=null) {
+                    lstPopUpFriendsRequest.setAdapter(null);
+                    MyuserListAdapter.notifyDataSetChanged();
+                }
             }
 
 
