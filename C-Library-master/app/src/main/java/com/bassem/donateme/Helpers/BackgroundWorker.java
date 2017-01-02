@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
@@ -112,14 +114,12 @@ public class BackgroundWorker extends AsyncTask<String,String,String> {
                     ;
                 }
             } else {
-                response = "{\"user\":[{\"status\":\"0\", \"message\":\"Response code : "+responseCode+" \"}]}";
-                Toast.makeText(context,"Response code: "+responseCode,Toast.LENGTH_LONG).show();
+                response = "responsecode: "+responseCode;
+
                 Log.d("PostResponseAsyncTask", responseCode + "");
             }
         } catch (Exception ex) {
-            response = "{\"user\":[{\"status\":\"0\", \"message\":\"Exception : "+ex.getMessage()+" \"}]}";;
-            Toast.makeText(context,"Error : "+ex.getMessage(),Toast.LENGTH_LONG).show();
-            //ex.printStackTrace();
+            response = "error: "+ex.getMessage();
             Log.d("exception",ex.toString());
         }
 
@@ -130,6 +130,7 @@ public class BackgroundWorker extends AsyncTask<String,String,String> {
         if(this.showLoadingMessage) {
             this.progressDialog = new ProgressDialog(context);
             this.progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            //this.progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             this.progressDialog.setMessage(this.loadingMessage);
             this.progressDialog.setIndeterminate(true);
 
@@ -148,22 +149,14 @@ public class BackgroundWorker extends AsyncTask<String,String,String> {
         result = result.trim();
         Log.d("Background workor result",result);
         if(this.asyncResponse != null) {
-
-           // JSONObject jsonObj = null;
             try {
-             //   jsonObj = new JSONObject(result.toString());
-             //   JSONArray userJSON = jsonObj.getJSONArray("user");
-             //   JSONObject obj = userJSON.getJSONObject(0);
-                //if (obj.getString("status").equals("1")) {
+
+                if(result.toLowerCase().contains("error") || result.toLowerCase().contains("responsecode") )
+                    Alert("Error from server",result);
+                else
                     this.asyncResponse.processFinish(result);
-               // }
-               // else{
-                   // Toast.makeText(context, obj.getString("message"), Toast.LENGTH_LONG).show();
-               //     this.ProcessFinishErrorResult = obj.getString("message")
-               //     Alert("Error",obj.getString("message"));
-               // }
             } catch (Exception e) {
-                Toast.makeText(context,"Error : "+e.getMessage().toString(),Toast.LENGTH_LONG).show();
+               // Toast.makeText(context,"Error : "+e.getMessage().toString(),Toast.LENGTH_LONG).show();
                 e.printStackTrace();
             }
         }

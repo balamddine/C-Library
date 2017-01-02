@@ -11,6 +11,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -50,6 +51,8 @@ public class UploadService extends IntentService {
     Map<String, String> Postparams =null;
     NotificationCompat.Builder mBuilder;
     String DBResult="";
+    ArrayList<String> mArrayUri = new ArrayList<String>();
+    ArrayList<String> msize = new ArrayList<String>();
     public UploadService() {
         super("");
     }
@@ -64,6 +67,7 @@ public class UploadService extends IntentService {
                 totalSize=  intent.getLongExtra("Filesize",0);
             if(extras.containsKey("GroupID"))
                 GroupID = intent.getStringExtra("GroupID");
+
         }
         filePath = DownloadUpload.getPath(this,FPath);
         Fname = getFileName(FPath);

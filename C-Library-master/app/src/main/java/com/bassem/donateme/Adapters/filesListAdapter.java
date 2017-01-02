@@ -122,7 +122,7 @@ public class filesListAdapter extends ArrayAdapter<files> {
 
     private void SetLayoutElements(View view) {
         txtFname = (TextView) view.findViewById(R.id.txtFilename);
-        txtSharedWith = (TextView) view.findViewById(R.id.txtSharedWith);
+        txtSharedWith = (TextView) view.findViewById(R.id.txtSharedWith2);
         img_Download = (ImageView) view.findViewById(R.id.img_Download);
     }
 

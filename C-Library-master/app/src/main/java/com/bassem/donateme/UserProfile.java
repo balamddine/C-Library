@@ -180,6 +180,11 @@ public class UserProfile extends AppCompatActivity
             fragmentTag ="Friends";
             FabResources = R.mipmap.adduser;
         }
+        else if(id==R.id.nav_discover)
+        {
+            myIntent = new Intent(this, UserListing.class);
+            this.startActivity(myIntent);
+        }
         else if (id == R.id.nav_gallery) {
             fragmentClass = UserGallery.class;
             fragmentTag = "Gallery";
@@ -193,10 +198,10 @@ public class UserProfile extends AppCompatActivity
             myIntent = new Intent(this, groups.class);
             this.startActivity(myIntent);
         }
-        else if (id == R.id.nav_track) {
+       /* else if (id == R.id.nav_track) {
             myIntent = new Intent(this, TrackActivity.class);
             this.startActivity(myIntent);
-        }
+        }*/
         else if(id==R.id.nav_editprofile)
         {
             myIntent = new Intent(this, editprofile.class);

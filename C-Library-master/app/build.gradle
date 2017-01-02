@@ -3,6 +3,12 @@ apply plugin: 'com.android.application'
 
 
 android {
+    dexOptions
+            {
+                incremental false
+                javaMaxHeapSize "2048M"
+                preDexLibraries = false
+            }
     signingConfigs {
         config {
             keyAlias 'clibrary'
@@ -21,11 +27,14 @@ android {
     buildToolsVersion "23.0.3"
     defaultConfig {
         applicationId "com.bassem.donateme"
-        minSdkVersion 15
-        targetSdkVersion 23
+        minSdkVersion 19
+        targetSdkVersion 25
+        multiDexEnabled true
         versionCode 1
         versionName "1.0"
+
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -43,10 +52,10 @@ android {
 }
 
 dependencies {
-
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile files('libs/universal-image-loader-1.9.5.jar')
     compile files('libs/picasso-2.5.2.jar')
+    compile 'com.android.support:multidex:1.0.1'
     compile 'com.google.firebase:firebase-core:9.8.0'
     compile 'com.google.firebase:firebase-messaging:9.8.0'
     compile 'com.android.support:appcompat-v7:25.0.0'

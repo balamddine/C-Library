@@ -241,6 +241,7 @@ public class editprofile extends AppCompatActivity implements AsyncResponse {
             jsonObj = new JSONObject(result.toString());
             JSONArray userJSON = jsonObj.getJSONArray("user");
             JSONObject obj = userJSON.getJSONObject(0);
+
             if(call.equals("GetUserByEmail"))
             {
                 SetFriendLayout(result,obj);

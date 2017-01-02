@@ -49,8 +49,8 @@
             android:textColor="#FFFFFF"
             android:textSize="10dp"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/txtSharedWith"
-            android:layout_toEndOf="@+id/txtSharedWith"
+            android:layout_toRightOf="@+id/txtSharedWith2"
+            android:layout_toEndOf="@+id/txtSharedWith2"
             android:layout_marginLeft="5dp" />
 
         <TextView
@@ -58,7 +58,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Shared with :"
-            android:id="@+id/txtSharedWith"
+            android:id="@+id/txtSharedWith2"
             android:textSize="8dp"
             android:textColor="#FFFFFF"
             android:layout_centerVertical="true"

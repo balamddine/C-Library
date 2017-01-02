@@ -57,7 +57,7 @@ import java.util.UUID;
  */
 public class Helper extends AppCompatActivity {
     public static final String phpHelperClass="helper.php";
-    public static final String HostURL ="http://192.168.137.1:80/Clibrary/";//"http://10.0.2.2:8080/Clibrary/";;//"http://leftovers.tabdab.me/Clibrary/";//// ;
+    public static final String HostURL ="http://leftovers.tabdab.me/Clibrary/";//"http://10.0.2.2:8080/Clibrary/";//"http://192.168.137.1:8080/Clibrary/";//// ;
     public static String getApplicationName(Context context) {
         int stringId = context.getApplicationInfo().labelRes;
         return context.getString(stringId);
@@ -262,7 +262,10 @@ public static void SetFullScreen(AppCompatActivity activity) {
                     fle = new files();
                     fle.setID(Integer.parseInt(((JSONObject)jArray.get(i)).getString("ID")));
                     fle.setName(((JSONObject)jArray.get(i)).getString("Name"));
-                    fle.setSharedWithUserName(((JSONObject)jArray.get(i)).getString("SharedWithName"));
+                    if(((JSONObject)jArray.get(i)).getString("SharedWithName")!=null && !((JSONObject)jArray.get(i)).getString("SharedWithName").equals(""))
+                    {
+                        fle.setSharedWithUserName(((JSONObject)jArray.get(i)).getString("SharedWithName"));
+                    }
                     listdata.add(fle);
                 }
             }

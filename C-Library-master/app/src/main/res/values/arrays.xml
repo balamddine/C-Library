@@ -3,7 +3,6 @@
     <string-array name="userFriendmenu" >
         <item>View Profile</item>
         <item>Share</item>
-        <item>View Current Location</item>
         <item>Unfriend</item>
     </string-array>
     <string-array name="userlisting" >

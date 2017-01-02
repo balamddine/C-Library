@@ -329,6 +329,7 @@ public class UserFriends extends Fragment implements AsyncResponse,SearchView.On
         intent.setType("*/*");
         String[] mimetypes =Helper.GetmimeTypes();
         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
        //
     try {
         startActivityForResult(Intent.createChooser(intent, "Select a File to Upload"), FILE_SELECT_CODE);
@@ -345,6 +346,8 @@ public class UserFriends extends Fragment implements AsyncResponse,SearchView.On
             case FILE_SELECT_CODE:
                 if (resultCode == RESULT_OK) {
                     // Get the Uri of the selected file
+                  //  Setfiles(data);
+
                     Uri fileUri = data.getData();
                    long size = Helper.GetFileSize(getActivity(),fileUri);
                     Log.d("File", "File Uri: " + fileUri.toString());
@@ -363,6 +366,8 @@ public class UserFriends extends Fragment implements AsyncResponse,SearchView.On
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+
 
     @Override
     public boolean onQueryTextSubmit(String query) {

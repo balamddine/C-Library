@@ -23,6 +23,7 @@ import com.bassem.donateme.Helpers.DownloadUpload;
 import com.bassem.donateme.Helpers.Helper;
 import com.bassem.donateme.Notifications.GCMRegistrationIntentService;
 import com.bassem.donateme.classes.DeviceToken;
+import com.bassem.donateme.classes.PermissionsHelper;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -44,10 +45,12 @@ public class Default extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_default);
        // Helper.CheckInternetConnection(this);
-        DownloadUpload.verifyStoragePermissions(this);
+        PermissionsHelper.verifyStoragePermissions(this);
+      //  PermissionsHelper.verifyGPSPermissions(this);
+
         SetReceiver();
         SetControls();
-        SetLogoAnimation();
+       // SetLogoAnimation();
 
         checkIfPreferencesExist();
         checkOrientation();
